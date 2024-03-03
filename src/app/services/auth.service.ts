@@ -35,6 +35,6 @@ export class AuthService {
     this.cookiesStorageService.deleteCookie('user.jwt');
     this.cookiesStorageService.deleteCookie('user.name');
     this.cookiesStorageService.deleteCookie('user.role');
-    this.router.navigate([`/login`]);
+    this.router.navigate([`/`]);
   }
 }
