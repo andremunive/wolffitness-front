@@ -1,0 +1,132 @@
+.sidebar {
+  background-color: black;
+  height: 100vh;
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  .header {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    h2 {
+      font-weight: 700;
+    }
+  }
+  hr {
+    color: #dbdbdb;
+  }
+  .body {
+    width: 100%;
+    span {
+      display: block;
+      width: 100%;
+      margin-bottom: 15px;
+      color: #dbdbdb;
+    }
+    .option {
+      height: 35px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 22px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: rgb(199, 199, 199);
+        color: rgb(29, 29, 29);
+      }
+    }
+    .active {
+      background-color: white;
+      justify-content: center;
+      color: black;
+      font-weight: 600;
+    }
+  }
+  .footer {
+    height: 100%;
+    display: flex;
+    align-items: end;
+    width: 100%;
+    button {
+      height: 35px;
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      color: white;
+      background-color: transparent;
+      font-size: 18px;
+      &:hover {
+        background-color: rgb(46, 46, 46);
+      }
+    }
+  }
+}
+
+.main-content {
+  width: calc(100vw - 250px);
+  padding: 10px 20px;
+  .content-header {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .content-table {
+    .false {
+      color: red;
+    }
+    .true {
+      color: green;
+    }
+  }
+  .form-container {
+    margin-top: 30px;
+    padding: 0 100px;
+    display: flex;
+    justify-content: center;
+    form {
+      width: 100%;
+      .one {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        .client-name {
+          width: 50%;
+        }
+        .plan {
+          width: 40%;
+        }
+        .info {
+          width: 30%;
+        }
+      }
+      .two {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        .form-group {
+          width: 30%;
+        }
+      }
+      textarea {
+        display: block;
+        margin-bottom: 30px;
+      }
+      .save-btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        button {
+          width: 30%;
+        }
+      }
+    }
+  }
+}
