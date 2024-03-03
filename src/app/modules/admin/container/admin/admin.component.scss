@@ -14,6 +14,7 @@
   overflow-y: auto; /* Añade scroll vertical si el contenido del sidebar es más largo que la ventana */ /* Establece un color de fondo para el sidebar */
   border-right: 1px solid #ddd; /* Añade un borde derecho al sidebar */
   z-index: 1000;
+  overflow-x: hidden;
   .header {
     margin-top: 10px;
     display: flex;
