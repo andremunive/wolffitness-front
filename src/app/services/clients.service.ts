@@ -24,7 +24,7 @@ export class ClientsService {
   }
 
   getAllUsers(): Observable<ClientModel> {
-    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?sort=startDate`;
+    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?sort=startDate&?pagination[page]=1&pagination[pageSize]=200`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });

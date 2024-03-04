@@ -36,7 +36,7 @@ export class TrainerComponent implements OnInit {
     this.makePaymentForm = this.formBuilder.group({
       name: ['Selecciona un cliente...', [Validators.required]],
       startDate: ['', [Validators.required]],
-      plan: ['Selecciona un plan...', [Validators.required]],
+      plan: ['6 dias a la semana', [Validators.required]],
       discount: [false, [Validators.required]],
       discountDescription: [''],
       monthlyPayment: [40000, [Validators.required]],
@@ -46,7 +46,7 @@ export class TrainerComponent implements OnInit {
       name: ['', [Validators.required]],
       whatsapp: ['', [Validators.required]],
       startDate: ['', [Validators.required]],
-      plan: ['Selecciona un plan...', [Validators.required]],
+      plan: ['6 dias a la semana', [Validators.required]],
       discount: [false, [Validators.required]],
       discountDescription: [''],
       monthlyPayment: [40000, [Validators.required]],
