@@ -68,19 +68,27 @@ export class AllClientsComponent implements OnInit {
     if (startDate && endDate) {
       this.clients = this.clients.filter(
         (client) =>
-          client.attributes.endDate >= startDate &&
-          client.attributes.endDate <= endDate
+          client.attributes.startDate >= startDate &&
+          client.attributes.startDate <= endDate
       );
     }
   }
 
+  get clientsMoney() {
+    let sum = 0;
+    this.clients.map((client) => {
+      sum = sum + client.attributes.monthlyPayment;
+    });
+    return sum;
+  }
+
   isActive(date: Date): string {
     let dateFormat = new Date(date);
-    dateFormat.setHours(0, 0, 0, 0); // Establecer horas, minutos, segundos y milisegundos a cero
+    dateFormat.setHours(0, 0, 0, 0);
     dateFormat.setDate(dateFormat.getDate() + 1);
 
     let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Establecer horas, minutos, segundos y milisegundos a cero
+    currentDate.setHours(0, 0, 0, 0);
 
     if (dateFormat >= currentDate) {
       return 'Activo';

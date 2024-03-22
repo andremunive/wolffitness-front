@@ -48,8 +48,21 @@
     </form>
   </div>
 
+  <!-- Contabilidad -->
+  <div class="contabilidad-container">
+    <div class="c-table">
+      <div class="c-clients">
+        <div class="title">Clientes totales</div>
+        <div class="c-data">{{ clients.length }}</div>
+      </div>
+      <div class="c-money">
+        <div class="title">Suma de mensualidades</div>
+        <div class="c-data">{{ clientsMoney | currency }}</div>
+      </div>
+    </div>
+  </div>
+
   <!-- TABLE -->
-  <h4>Total: {{ clients.length }}</h4>
   <div class="content-table">
     <table class="table table-striped">
       <thead>
