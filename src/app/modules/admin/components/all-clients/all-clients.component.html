@@ -1,0 +1,109 @@
+<app-loader *ngIf="!clients"></app-loader>
+
+<div class="main-content" *ngIf="clients">
+  <div class="content-header">
+    <h2>Clientes</h2>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters-container">
+    <form [formGroup]="filterForm">
+      <div class="form-group main-search">
+        <input
+          placeholder="Nombre"
+          type="text"
+          class="form-control"
+          formControlName="name"
+        />
+        <button class="btn btn-primary" (click)="clearFilters()">
+          Borrar filtros
+        </button>
+      </div>
+      <div class="other-filters">
+        <div class="form-group">
+          <label for="">Estatus</label>
+          <select class="form-select" formControlName="status">
+            <option value="Activo">Activos</option>
+            <option value="Inactivo">Inactivos</option>
+            <option selected value="todos">Todos</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="">Entrenador</label>
+          <select class="form-select" formControlName="trainer">
+            <option selected value="Andres Munive">Andres Munive</option>
+            <option selected value="Ivan Romero">Ivan Romero</option>
+            <option value="Julio Munive">Julio Munive</option>
+            <option value="Ruby Manjarres">Ruby Manjarres</option>
+            <option selected value="todos">Todos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="">Fecha</label>
+          <input type="date" class="form-control" formControlName="startDate" />
+          <input type="date" class="form-control" formControlName="endDate" />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- TABLE -->
+  <h4>Total: {{ clients.length }}</h4>
+  <div class="content-table">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Entrenador</th>
+          <th scope="col">WhatsApp</th>
+          <th scope="col">Fecha de inicio</th>
+          <th scope="col">Fecha final</th>
+          <th scope="col">Plan</th>
+          <th scope="col">Motivo descuento</th>
+          <th scope="col">Mensualidad</th>
+          <th scope="col">Estatus</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let client of clients">
+          <td>{{ client.attributes.name }}</td>
+          <td>{{ client.attributes.trainer }}</td>
+          <td>{{ client.attributes.whatsapp }}</td>
+          <td>{{ client.attributes.startDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ client.attributes.endDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ client.attributes.plan }}</td>
+          <td>
+            {{
+              client.attributes.discountDescription
+                ? client.attributes.discountDescription
+                : "No aplica"
+            }}
+          </td>
+          <td>{{ client.attributes.monthlyPayment | currency }}</td>
+          <td
+            class="false"
+            [ngClass]="{
+              true: isActive(client.attributes.endDate) == 'Activo'
+            }"
+          >
+            {{ isActive(client.attributes.endDate) }}
+          </td>
+          <td class="actions">
+            <i
+              class="fa fa-trash"
+              aria-hidden="true"
+              (click)="notAvailableYet()"
+            ></i>
+            <i
+              class="fa fa-pencil"
+              aria-hidden="true"
+              (click)="notAvailableYet()"
+            ></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

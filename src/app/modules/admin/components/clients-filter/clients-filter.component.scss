@@ -1,0 +1,71 @@
+.main-content {
+  width: calc(100vw - 250px);
+  padding: 10px 20px;
+  margin-left: 250px;
+  .content-header {
+    margin: 10px 0;
+    display: flex;
+    justify-content: center;
+  }
+  .filter {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 100px;
+    align-items: center;
+    label {
+      font-weight: 600;
+    }
+    margin: 20px 0;
+  }
+  .content-table {
+    .false {
+      color: red;
+    }
+    .true {
+      color: green;
+    }
+  }
+  .form-container {
+    margin-top: 30px;
+    padding: 0 100px;
+    display: flex;
+    justify-content: center;
+    form {
+      width: 100%;
+      .one {
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        .client-name {
+          width: 50%;
+        }
+        .plan {
+          width: 40%;
+        }
+        .info {
+          width: 30%;
+        }
+      }
+      .two {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        .form-group {
+          width: 30%;
+        }
+      }
+      textarea {
+        display: block;
+        margin-bottom: 30px;
+      }
+      .save-btn {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        button {
+          width: 30%;
+        }
+      }
+    }
+  }
+}

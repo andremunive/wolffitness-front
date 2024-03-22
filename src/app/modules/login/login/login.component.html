@@ -1,22 +1,24 @@
 <main>
-  <h2>Iniciar Sesion</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-    <div class="form-group">
-      <input
-        placeholder="usuario"
-        type="text"
-        class="form-control"
-        formControlName="user"
-      />
-    </div>
-    <div class="form-group">
-      <input
-        placeholder="clave"
-        type="password"
-        class="form-control"
-        formControlName="password"
-      />
-    </div>
-    <button type="submit" class="btn btn-primary">Iniciar sesión</button>
-  </form>
+  <div class="login-container">
+    <h2>Iniciar Sesion</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input
+          placeholder="usuario"
+          type="text"
+          class="form-control"
+          formControlName="user"
+        />
+      </div>
+      <div class="form-group">
+        <input
+          placeholder="clave"
+          type="password"
+          class="form-control"
+          formControlName="password"
+        />
+      </div>
+      <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    </form>
+  </div>
 </main>
