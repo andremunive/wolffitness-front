@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ClientModel, Datum } from 'src/app/core/models/client.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ClientsService } from 'src/app/services/clients.service';
@@ -16,8 +16,10 @@ export class TrainerComponent implements OnInit {
   actionActive: string = 'clients';
   user: string = '';
   clients: Datum[];
+  copyClients: Datum[];
   makePaymentForm: FormGroup;
   registerUserForm: FormGroup;
+  filterForm: FormGroup;
 
   constructor(
     private cookieStorageService: CookieStorageService,
@@ -30,6 +32,8 @@ export class TrainerComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
     this.initForm();
+    this.initFilterForm();
+    this.toFilter();
   }
 
   initForm() {
@@ -53,6 +57,14 @@ export class TrainerComponent implements OnInit {
     });
   }
 
+  get clientsMoney() {
+    let sum = 0;
+    this.clients.map((client) => {
+      sum = sum + client.attributes.monthlyPayment;
+    });
+    return sum;
+  }
+
   get getUserName(): string {
     return this.cookieStorageService.getCookie('user.name');
   }
@@ -62,18 +74,22 @@ export class TrainerComponent implements OnInit {
       .getUsersByTrainerLogged()
       .subscribe((res: ClientModel) => {
         this.clients = res.data;
+        this.copyClients = res.data;
       });
   }
 
   isActive(date: Date): string {
-    const dateFormat = new Date(date);
+    let dateFormat = new Date(date);
+    dateFormat.setHours(0, 0, 0, 0);
+    dateFormat.setDate(dateFormat.getDate() + 1);
 
-    const currentDate = new Date();
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
 
     if (dateFormat >= currentDate) {
-      return 'Si';
+      return 'Activo';
     } else {
-      return 'No';
+      return 'Inactivo';
     }
   }
 
@@ -144,6 +160,58 @@ export class TrainerComponent implements OnInit {
         this.getUsers();
       });
     }
+  }
+
+  initFilterForm() {
+    this.filterForm = this.formBuilder.group({
+      status: ['todos'],
+      name: [''],
+      startDate: [''],
+      endDate: [''],
+    });
+  }
+
+  applyFilter() {
+    //By status
+    const statusFiltered = this.filterForm.value['status'];
+    if (statusFiltered != 'todos') {
+      this.clients = this.copyClients.filter(
+        (client) => this.isActive(client.attributes.endDate) === statusFiltered
+      );
+    } else {
+      this.clients = this.copyClients;
+    }
+
+    //By name
+    let nameFiltered: string = this.filterForm.value['name'];
+    this.clients = this.clients.filter((client) =>
+      client.attributes.name.startsWith(nameFiltered)
+    );
+
+    //By Date
+    const startDate = this.filterForm.value['startDate'];
+    const endDate = this.filterForm.value['endDate'];
+    if (startDate && endDate) {
+      this.clients = this.clients.filter(
+        (client) =>
+          client.attributes.startDate >= startDate &&
+          client.attributes.startDate <= endDate
+      );
+    }
+  }
+
+  toFilter() {
+    this.filterForm.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe(() => {
+        this.applyFilter();
+      });
+  }
+
+  clearFilters() {
+    this.initFilterForm();
+    this.applyFilter();
+    this.toFilter();
   }
 
   logOut() {

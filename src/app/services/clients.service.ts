@@ -16,7 +16,7 @@ export class ClientsService {
 
   getUsersByTrainerLogged(): Observable<ClientModel> {
     const trainer = this.cookiesStorageService.getCookie('user.name');
-    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?filters[trainer][$eq]=${trainer}`;
+    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?filters[trainer][$eq]=${trainer}&?sort=startDate&?pagination[page]=1&pagination[pageSize]=200`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });

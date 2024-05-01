@@ -41,6 +41,55 @@
     <div class="content-header">
       <h2>Todos mis clientes</h2>
     </div>
+    <!-- Filters -->
+    <div class="filters-container">
+      <form [formGroup]="filterForm">
+        <div class="form-group main-search">
+          <input
+            placeholder="Nombre"
+            type="text"
+            class="form-control"
+            formControlName="name"
+          />
+          <button class="btn btn-primary" (click)="clearFilters()">
+            Borrar filtros
+          </button>
+        </div>
+        <div class="other-filters">
+          <div class="form-group">
+            <label for="">Estatus</label>
+            <select class="form-select" formControlName="status">
+              <option value="Activo">Activos</option>
+              <option value="Inactivo">Inactivos</option>
+              <option selected value="todos">Todos</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="">Fecha</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="startDate"
+            />
+            <input type="date" class="form-control" formControlName="endDate" />
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- Contabilidad -->
+    <div class="contabilidad-container">
+      <div class="c-table">
+        <div class="c-clients">
+          <div class="title">Clientes totales</div>
+          <div class="c-data">{{ clients.length }}</div>
+        </div>
+        <div class="c-money">
+          <div class="title">Suma de mensualidades</div>
+          <div class="c-data">{{ clientsMoney | currency }}</div>
+        </div>
+      </div>
+    </div>
     <div class="content-table">
       <table class="table table-striped">
         <thead>
@@ -52,7 +101,7 @@
             <th scope="col">Plan</th>
             <th scope="col">Descuento activo</th>
             <th scope="col">Mensualidad</th>
-            <th scope="col">Activo</th>
+            <th scope="col">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -68,7 +117,9 @@
             <td>{{ client.attributes.monthlyPayment | currency }}</td>
             <td
               class="false"
-              [ngClass]="{ true: isActive(client.attributes.endDate) == 'Si' }"
+              [ngClass]="{
+                true: isActive(client.attributes.endDate) == 'Activo'
+              }"
             >
               {{ isActive(client.attributes.endDate) }}
             </td>
