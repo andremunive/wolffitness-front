@@ -3,9 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { ClientModel, Datum } from 'src/app/core/models/client.model';
+import { ToolbarModel } from 'src/app/core/models/toolbar.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-trainer',
@@ -16,24 +18,43 @@ export class TrainerComponent implements OnInit {
   actionActive: string = 'clients';
   user: string = '';
   clients: Datum[];
-  copyClients: Datum[];
+  clientsBackUp: Datum[];
   makePaymentForm: FormGroup;
   registerUserForm: FormGroup;
   filterForm: FormGroup;
+  page: string;
+
+  toolbarMenu: ToolbarModel[] = [
+    {
+      title: 'Asesorados',
+    },
+    {
+      title: 'Agregar asesorado',
+    },
+  ];
 
   constructor(
     private cookieStorageService: CookieStorageService,
     private clientService: ClientsService,
     private formBuilder: FormBuilder,
     private toast: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _global: GlobalService
   ) {}
 
   ngOnInit(): void {
+    this.listenToChanges();
     this.getUsers();
     this.initForm();
     this.initFilterForm();
     this.toFilter();
+  }
+
+  listenToChanges() {
+    this._global
+      .getPageSelectedObservable()
+      .subscribe((res) => (this.page = res));
+    this._global.getUserUpdatedObservable().subscribe((res) => this.getUsers());
   }
 
   initForm() {
@@ -74,7 +95,7 @@ export class TrainerComponent implements OnInit {
       .getUsersByTrainerLogged()
       .subscribe((res: ClientModel) => {
         this.clients = res.data;
-        this.copyClients = res.data;
+        this.clientsBackUp = res.data;
       });
   }
 
@@ -104,62 +125,12 @@ export class TrainerComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  pay(): void {
-    if (this.makePaymentForm.valid) {
-      let id;
-      const startDate = this.makePaymentForm.value['startDate'];
-      const user = {
-        data: {
-          startDate: this.makePaymentForm.value['startDate'],
-          endDate: this.getEndDate(startDate),
-          plan: this.makePaymentForm.value['plan'],
-          discount: this.makePaymentForm.value['discount'],
-          discountDescription:
-            this.makePaymentForm.value['discountDescription'],
-          monthlyPayment: this.makePaymentForm.value['monthlyPayment'],
-        },
-      };
-
-      this.clientService
-        .getUserByName(this.makePaymentForm.value['name'])
-        .pipe(
-          switchMap((res: ClientModel) => {
-            return this.clientService.makePayment(user, res.data[0].id);
-          })
-        )
-        .subscribe(() => {
-          this.initForm();
-          this.toast.success('Pago registrado', 'Exito');
-          this.getUsers();
-        });
-    }
-  }
-
-  registerUser() {
-    if (this.registerUserForm.valid) {
-      const startDate = this.registerUserForm.value['startDate'];
-
-      const user = {
-        data: {
-          name: this.registerUserForm.value['name'],
-          whatsapp: this.registerUserForm.value['whatsapp'],
-          startDate: this.registerUserForm.value['startDate'],
-          endDate: this.getEndDate(startDate),
-          plan: this.registerUserForm.value['plan'],
-          discount: this.registerUserForm.value['discount'],
-          discountDescription:
-            this.makePaymentForm.value['discountDescription'],
-          monthlyPayment: this.makePaymentForm.value['monthlyPayment'],
-          trainer: this.getUserName,
-        },
-      };
-
-      this.clientService.registerUser(user).subscribe(() => {
-        this.initForm();
-        this.toast.success('Usuario registrado', 'Exito');
-        this.getUsers();
-      });
-    }
+  registerUser(event) {
+    this.clientService.registerUser(event).subscribe(() => {
+      this.initForm();
+      this.toast.success('Usuario registrado', 'Exito');
+      this.getUsers();
+    });
   }
 
   initFilterForm() {
@@ -171,46 +142,24 @@ export class TrainerComponent implements OnInit {
     });
   }
 
-  applyFilter() {
-    //By status
-    const statusFiltered = this.filterForm.value['status'];
-    if (statusFiltered != 'todos') {
-      this.clients = this.copyClients.filter(
-        (client) => this.isActive(client.attributes.endDate) === statusFiltered
-      );
-    } else {
-      this.clients = this.copyClients;
-    }
-
-    //By name
-    let nameFiltered: string = this.filterForm.value['name'];
-    this.clients = this.clients.filter((client) =>
-      client.attributes.name.startsWith(nameFiltered)
+  applyFilter(value: string) {
+    const param = value.toLowerCase();
+    this.clients = this.clientsBackUp.filter((client) =>
+      client.attributes.name.toLowerCase().startsWith(param)
     );
-
-    //By Date
-    const startDate = this.filterForm.value['startDate'];
-    const endDate = this.filterForm.value['endDate'];
-    if (startDate && endDate) {
-      this.clients = this.clients.filter(
-        (client) =>
-          client.attributes.startDate >= startDate &&
-          client.attributes.startDate <= endDate
-      );
-    }
   }
 
   toFilter() {
     this.filterForm.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe(() => {
-        this.applyFilter();
+        // this.applyFilter();
       });
   }
 
   clearFilters() {
     this.initFilterForm();
-    this.applyFilter();
+    // this.applyFilter();
     this.toFilter();
   }
 

@@ -21,9 +21,7 @@ export interface Attributes {
   trainer?: string;
   updatedAt: Date;
   whatsapp: string;
-
-  birthDate?: Date;
-  email?: string;
+  hasPaid: boolean;
 }
 
 export interface Meta {
