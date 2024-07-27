@@ -1,0 +1,84 @@
+<div class="add-clients-container">
+  <div class="add-client-header">
+    <h1>Formulario de registro</h1>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="registerUserForm" (ngSubmit)="registerUser()">
+      <div class="form-wrapper">
+        <div class="info form-group">
+          <label>Nombre y apellido</label>
+          <input type="text" class="form-control" formControlName="name" />
+        </div>
+        <div class="info form-group">
+          <label>WhatsApp</label>
+          <input
+            type="text"
+            class="form-control short"
+            formControlName="whatsapp"
+          />
+        </div>
+        <div class="info form-group">
+          <label>Plan</label>
+          <select class="form-select" formControlName="plan">
+            <option selected disabled>Selecciona un plan...</option>
+            <option value="6 dias a la semana">6 dias a la semana</option>
+            <option value="3 dias a la semana">3 dias a la semana</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Fecha de inicio</label>
+          <input
+            formControlName="startDate"
+            type="date"
+            class="form-control short"
+            placeholder="Seleccionar fecha"
+          />
+        </div>
+        <div class="form-group">
+          <label>Fecha final</label>
+          <input
+            formControlName="endDate"
+            type="date"
+            class="form-control short"
+            placeholder="Seleccionar fecha"
+          />
+        </div>
+        <div class="form-group">
+          <label>Mensualidad</label>
+          <input
+            formControlName="monthlyPayment"
+            type="number"
+            class="form-control short"
+          />
+        </div>
+        <div class="form-group">
+          <label>Aplica algún descuento?</label>
+          <select class="form-select" formControlName="discount">
+            <option [ngValue]="true">Sí</option>
+            <option [ngValue]="false">No</option>
+          </select>
+        </div>
+        <div *ngIf="registerUserForm?.value['discount']" class="form-group">
+          <label>Motivo del descuento</label>
+          <textarea
+            formControlName="discountDescription"
+            name=""
+            id=""
+            cols="40"
+            rows="5"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="save-btn">
+        <button
+          type="submit"
+          [disabled]="!registerUserForm.valid"
+          class="btn btn-primary"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

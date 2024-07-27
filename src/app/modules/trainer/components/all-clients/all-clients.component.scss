@@ -1,0 +1,30 @@
+.all-clients-container {
+  .clients-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  input {
+    width: 90%;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid gray;
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+  .card-container {
+    .card-element {
+      display: flex;
+      justify-content: center;
+    }
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 22px;
+    justify-content: center;
+  }
+}

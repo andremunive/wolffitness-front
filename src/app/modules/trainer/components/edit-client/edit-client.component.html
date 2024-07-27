@@ -1,0 +1,43 @@
+<div class="edit-client-container">
+  <div class="edit-client-header">
+    <h1>Editar asesorado</h1>
+  </div>
+  <div class="form-container">
+    <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label>Fecha de inicio</label>
+        <input
+          formControlName="startDate"
+          type="date"
+          class="form-control short"
+          placeholder="Seleccionar fecha"
+        />
+      </div>
+      <div class="form-group">
+        <label>Fecha final</label>
+        <input
+          formControlName="endDate"
+          type="date"
+          class="form-control short"
+          placeholder="Seleccionar fecha"
+        />
+      </div>
+      <div class="form-group">
+        <p>
+          <mat-slide-toggle formControlName="hasPaid" labelPosition="before">{{
+            hasPaidValue ? "Al dia" : "Pendiente"
+          }}</mat-slide-toggle>
+        </p>
+      </div>
+      <div class="save-btn">
+        <button
+          type="submit"
+          [disabled]="!editUserForm.valid"
+          class="btn btn-primary"
+        >
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

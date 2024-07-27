@@ -1,0 +1,37 @@
+<div class="card-container" (click)="openDialog()">
+  <div class="card-header">
+    <span>{{ client.name }}</span>
+    <div
+      class="status-indicator"
+      [class.active]="isActive"
+      matTooltip="{{ isActive ? 'Activo' : 'Inactivo' }}"
+    ></div>
+  </div>
+  <div class="line"></div>
+  <div class="card-body">
+    <div class="inline container">
+      <div class="inline">
+        <mat-icon>date_range</mat-icon>
+        <span>{{ client.endDate }}</span>
+      </div>
+      <div class="inline">
+        <mat-icon>calendar_today</mat-icon>
+        <span>{{ client.plan }}</span>
+      </div>
+    </div>
+    <div class="inline container">
+      <div class="inline">
+        <mat-icon>phone</mat-icon>
+        <span>{{ client.whatsapp }}</span>
+      </div>
+      <div class="inline">
+        <mat-icon>attach_money</mat-icon>
+        <span>{{ client.monthlyPayment | currency }}</span>
+      </div>
+    </div>
+    <div class="inline plan">
+      <mat-icon>{{ client.hasPaid ? "check_circle" : "warning" }}</mat-icon>
+      <span>{{ client.hasPaid ? "Al dia" : "Pendiente" }}</span>
+    </div>
+  </div>
+</div>

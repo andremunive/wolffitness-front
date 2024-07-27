@@ -1,0 +1,18 @@
+<div class="all-clients-container">
+  <div class="clients-header">
+    <h1>Mis asesorados</h1>
+    <input
+      [(ngModel)]="mainSearchValue"
+      type="text"
+      placeholder="Busqueda por nombre..."
+      (ngModelChange)="search()"
+    />
+  </div>
+  <div *ngIf="clients?.length" class="card-container">
+    <app-card
+      class="card-element"
+      *ngFor="let client of clients"
+      [client]="client.attributes"
+    ></app-card>
+  </div>
+</div>

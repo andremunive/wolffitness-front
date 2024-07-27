@@ -1,0 +1,28 @@
+.edit-client-container {
+  width: 80vw;
+  max-width: 400px;
+  padding: 20px 16px;
+  .edit-client-header {
+    text-align: center;
+  }
+  .form-container {
+    .form-group {
+      margin: 12px 0;
+      p {
+        text-align: center;
+        button {
+          margin-left: 12px;
+        }
+      }
+    }
+    .save-btn {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 16px;
+      button {
+        width: 30%;
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -22,6 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     NgxSpinnerModule,
     MatInputModule,
     MatFormFieldModule,
+    MatToolbarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
