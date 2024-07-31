@@ -76,7 +76,7 @@
           <th scope="col">Motivo descuento</th>
           <th scope="col">Mensualidad</th>
           <th scope="col">Estatus</th>
-          <th scope="col">Acciones</th>
+          <th scope="col">Pago</th>
         </tr>
       </thead>
       <tbody>
@@ -104,16 +104,7 @@
             {{ isActive(client.attributes.endDate) }}
           </td>
           <td class="actions">
-            <i
-              class="fa fa-trash"
-              aria-hidden="true"
-              (click)="notAvailableYet()"
-            ></i>
-            <i
-              class="fa fa-pencil"
-              aria-hidden="true"
-              (click)="notAvailableYet()"
-            ></i>
+            {{ client.attributes.hasPaid ? "Al dia" : "Pendiente" }}
           </td>
         </tr>
       </tbody>
