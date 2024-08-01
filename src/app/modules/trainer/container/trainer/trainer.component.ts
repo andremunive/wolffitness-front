@@ -31,6 +31,9 @@ export class TrainerComponent implements OnInit {
     {
       title: 'Agregar asesorado',
     },
+    {
+      title: 'Progreso',
+    },
   ];
 
   constructor(

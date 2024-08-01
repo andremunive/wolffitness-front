@@ -1,0 +1,101 @@
+<div class="progress-container">
+  <div class="progress-header">
+    <h1>Progreso</h1>
+  </div>
+  <div class="progress-body">
+    <div class="progress-card-container">
+      <div class="all-clients-card progress-card">
+        <div class="progress-header">
+          <span>Mis asesorados</span>
+        </div>
+        <div class="progress-card-body">
+          <div class="inline">
+            <div class="info"><span>Activos: </span> {{ activesClients }}</div>
+            <div class="info">
+              <span>Inactivos: </span> {{ inactivesClients }}
+            </div>
+          </div>
+          <div class="inline">
+            <div class="info">
+              <span>Al dia: </span> {{ notPendingClients }}
+            </div>
+            <div class="info">
+              <span>Pendientes: </span>{{ pendingClients }}
+            </div>
+          </div>
+          <div class="inline">
+            <div class="info"><span>3 dias: </span>{{ threeDaysClients }}</div>
+            <div class="info"><span>6 dias: </span>{{ sixDaysClients }}</div>
+          </div>
+          <div class="inline">
+            <div class="info">
+              <span>Esta quincena: </span>{{ currentFortnightClients }}
+            </div>
+            <div class="info"><span>Total: </span>{{ clients?.length }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-card-container">
+      <div class="fort-night-card progress-card">
+        <div class="progress-header">
+          <span>Mi quincena</span>
+        </div>
+        <div class="progress-card-body">
+          <div class="progress-container">
+            <div class="progress-label">0</div>
+            <div class="progress-label right">7</div>
+            <div class="progress-bar">
+              <div
+                class="progress"
+                [style.width.%]="(currentFortnightSixDaysClients / 7) * 100"
+              >
+                <span class="progress-text">{{
+                  currentFortnightSixDaysClients
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Plan 3 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ currentFortnightThreeDaysClients }}
+              </div>
+              <div class="info">
+                <span>Mensualidades: </span>
+                {{ currentFortnightThreeDaysClientsPayment | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Plan 6 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ currentFortnightSixDaysClients }}
+              </div>
+              <div class="info">
+                <span>Mensualidades: </span>
+                {{ currentFortnightSixDaysClientsPayment | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Total quincena</span>
+            <div class="info">
+              <span>Asesorados: </span
+              >{{
+                currentFortnightThreeDaysClientsPayment +
+                  currentFortnightSixDaysClientsPayment | currency
+              }}
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Total bono</span>
+            <div class="info"><span>Bono: </span>{{ bono | currency }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,4 +10,5 @@
     *ngSwitchCase="'Agregar asesorado'"
     (register)="registerUser($event)"
   ></app-add-clients>
+  <app-progress *ngSwitchCase="'Progreso'" [clients]="clients"></app-progress>
 </div>

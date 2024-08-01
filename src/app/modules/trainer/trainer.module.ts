@@ -12,12 +12,14 @@ import { FormsModule } from '@angular/forms';
 import { EditClientComponent } from './components/edit-client/edit-client.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { ProgressComponent } from './components/progress/progress.component';
 @NgModule({
   declarations: [
     TrainerComponent,
     AllClientsComponent,
     AddClientsComponent,
     EditClientComponent,
+    ProgressComponent,
   ],
   imports: [
     CommonModule,
