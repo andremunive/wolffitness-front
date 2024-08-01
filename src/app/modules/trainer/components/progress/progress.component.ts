@@ -289,7 +289,6 @@ export class ProgressComponent implements OnInit {
 
     if (filteredClients?.length > 7) {
       const bonusClients = filteredClients?.slice(7);
-      console.log(bonusClients);
       let bonusToPay = 0;
       bonusClients.forEach((client) => {
         const payment = client.attributes.monthlyPayment - 40000;

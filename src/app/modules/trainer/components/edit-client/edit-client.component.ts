@@ -49,7 +49,6 @@ export class EditClientComponent {
           hasPaid: this.editUserForm.value['hasPaid'],
         },
       };
-      console.log(user);
 
       this._client
         .getUserByName(this.data.name)
