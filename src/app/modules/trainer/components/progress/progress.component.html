@@ -42,20 +42,6 @@
           <span>Mi quincena</span>
         </div>
         <div class="progress-card-body">
-          <div class="progress-container">
-            <div class="progress-label">0</div>
-            <div class="progress-label right">7</div>
-            <div class="progress-bar">
-              <div
-                class="progress"
-                [style.width.%]="(currentFortnightSixDaysClients / 7) * 100"
-              >
-                <span class="progress-text">{{
-                  currentFortnightSixDaysClients
-                }}</span>
-              </div>
-            </div>
-          </div>
           <div class="fort-night-container">
             <span>Plan 3 dias a la semana</span>
             <div class="inline">
@@ -87,6 +73,64 @@
               >{{
                 currentFortnightThreeDaysClientsPayment +
                   currentFortnightSixDaysClientsPayment | currency
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-card-container">
+      <div class="fort-night-card progress-card">
+        <div class="progress-header">
+          <span>Mi mes</span>
+        </div>
+        <div class="progress-card-body">
+          <div class="progress-container">
+            <div class="progress-label">0</div>
+            <div class="progress-label right">7</div>
+            <div class="progress-bar">
+              <div
+                class="progress"
+                [style.width.%]="(currentMonthSixDaysClients / 7) * 100"
+              >
+                <span class="progress-text">{{
+                  currentMonthSixDaysClients
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Plan 3 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ currentMonthThreeDaysClients }}
+              </div>
+              <div class="info">
+                <span>Mensualidades: </span>
+                {{ currentMonthThreeDaysClientsPayment | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Plan 6 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ currentMonthSixDaysClients }}
+              </div>
+              <div class="info">
+                <span>Mensualidades: </span>
+                {{ currentMonthSixDaysClientsPayment | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Total mes</span>
+            <div class="info">
+              <span>Asesorados: </span
+              >{{
+                currentMonthThreeDaysClientsPayment +
+                  currentMonthSixDaysClientsPayment | currency
               }}
             </div>
           </div>

@@ -122,6 +122,87 @@ export class ProgressComponent implements OnInit {
       );
     }).length;
   }
+
+  get currentMonthSixDaysClients(): number {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
+
+    return this.clients?.filter((client) => {
+      const startDate = new Date(client?.attributes.startDate);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth();
+
+      return (
+        startYear === currentYear &&
+        startMonth === currentMonth &&
+        client.attributes.plan == '6 dias a la semana'
+      );
+    }).length;
+  }
+  get currentMonthThreeDaysClients(): number {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
+
+    return this.clients?.filter((client) => {
+      const startDate = new Date(client?.attributes.startDate);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth();
+
+      return (
+        startYear === currentYear &&
+        startMonth === currentMonth &&
+        client.attributes.plan == '3 dias a la semana'
+      );
+    }).length;
+  }
+  get currentMonthThreeDaysClientsPayment(): number {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
+
+    const filteredClients = this.clients?.filter((client) => {
+      const startDate = new Date(client?.attributes.startDate);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth();
+
+      return (
+        startYear === currentYear &&
+        startMonth === currentMonth &&
+        client.attributes.plan == '3 dias a la semana'
+      );
+    });
+    let payment = 0;
+    filteredClients?.forEach((client) => {
+      payment = payment + client.attributes.monthlyPayment;
+    });
+    return payment;
+  }
+
+  get currentMonthSixDaysClientsPayment(): number {
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
+
+    const filteredClients = this.clients?.filter((client) => {
+      const startDate = new Date(client?.attributes.startDate);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth();
+
+      return (
+        startYear === currentYear &&
+        startMonth === currentMonth &&
+        client.attributes.plan == '6 dias a la semana'
+      );
+    });
+    let payment = 0;
+    filteredClients?.forEach((client) => {
+      payment = payment + client.attributes.monthlyPayment;
+    });
+    return payment;
+  }
+
   get currentFortnightThreeDaysClients(): number {
     // Determinar los límites de la quincena actual
     let startOfFortnight: Date;
@@ -250,39 +331,18 @@ export class ProgressComponent implements OnInit {
   }
 
   get bono(): number {
-    // Determinar los límites de la quincena actual
-    let startOfFortnight: Date;
-    let endOfFortnight: Date;
-
-    if (this.currentDay <= 15) {
-      // Primera quincena del mes
-      startOfFortnight = new Date(this.currentYear, this.currentMonth, 1);
-      endOfFortnight = new Date(
-        this.currentYear,
-        this.currentMonth,
-        15,
-        23,
-        59,
-        59
-      ); // Final del 15 de mes
-    } else {
-      // Segunda quincena del mes
-      startOfFortnight = new Date(this.currentYear, this.currentMonth, 16);
-      endOfFortnight = new Date(
-        this.currentYear,
-        this.currentMonth + 1,
-        0,
-        23,
-        59,
-        59
-      );
-    }
+    const currentDate = new Date();
+    const currentYear = currentDate.getFullYear();
+    const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
 
     const filteredClients = this.clients?.filter((client) => {
-      const startDate = new Date(client.attributes.startDate);
+      const startDate = new Date(client?.attributes.startDate);
+      const startYear = startDate.getFullYear();
+      const startMonth = startDate.getMonth();
+
       return (
-        startDate >= startOfFortnight &&
-        startDate <= endOfFortnight &&
+        startYear === currentYear &&
+        startMonth === currentMonth &&
         client.attributes.plan == '6 dias a la semana'
       );
     });

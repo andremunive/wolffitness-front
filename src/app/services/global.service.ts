@@ -9,7 +9,7 @@ export class GlobalService {
   private userUpdated: BehaviorSubject<boolean>;
 
   constructor() {
-    this.pageSelected = new BehaviorSubject<string>('Asesorados');
+    this.pageSelected = new BehaviorSubject<string>('Progreso');
     this.userUpdated = new BehaviorSubject<boolean>(false);
   }
 
