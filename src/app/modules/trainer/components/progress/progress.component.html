@@ -3,54 +3,30 @@
     <h1>Progreso</h1>
   </div>
   <div class="progress-body">
-    <div class="progress-card-container">
-      <div class="all-clients-card progress-card">
-        <div class="progress-header">
-          <span>Mis asesorados</span>
-        </div>
-        <div class="progress-card-body">
-          <div class="inline">
-            <div class="info"><span>Activos: </span> {{ activesClients }}</div>
-            <div class="info">
-              <span>Inactivos: </span> {{ inactivesClients }}
-            </div>
-          </div>
-          <div class="inline">
-            <div class="info">
-              <span>Al dia: </span> {{ notPendingClients }}
-            </div>
-            <div class="info">
-              <span>Pendientes: </span>{{ pendingClients }}
-            </div>
-          </div>
-          <div class="inline">
-            <div class="info"><span>3 dias: </span>{{ threeDaysClients }}</div>
-            <div class="info"><span>6 dias: </span>{{ sixDaysClients }}</div>
-          </div>
-          <div class="inline">
-            <div class="info">
-              <span>Esta quincena: </span>{{ currentFortnightClients }}
-            </div>
-            <div class="info"><span>Total: </span>{{ clients?.length }}</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <!-- Primera quincena -->
     <div class="progress-card-container">
       <div class="fort-night-card progress-card">
         <div class="progress-header">
-          <span>Mi quincena</span>
+          <span>Primera quincena del mes</span>
         </div>
         <div class="progress-card-body">
           <div class="fort-night-container">
             <span>Plan 3 dias a la semana</span>
             <div class="inline">
               <div class="info">
-                <span>Asesorados: </span>{{ currentFortnightThreeDaysClients }}
+                <span>Asesorados: </span>{{ fortnightClientsPerDays(1, "3") }}
               </div>
               <div class="info">
-                <span>Mensualidades: </span>
-                {{ currentFortnightThreeDaysClientsPayment | currency }}
+                <span>Pendientes: </span
+                >{{ fortnightClientsPerDays(1, "3", false) }}
+              </div>
+              <div class="info">
+                <span>Total pendientes: </span>
+                {{ fortnightClientsPaymentPerDays(1, "3", false) | currency }}
+              </div>
+              <div class="info">
+                <span>Total asesorados: </span>
+                {{ fortnightClientsPaymentPerDays(1, "3") | currency }}
               </div>
             </div>
           </div>
@@ -58,11 +34,19 @@
             <span>Plan 6 dias a la semana</span>
             <div class="inline">
               <div class="info">
-                <span>Asesorados: </span>{{ currentFortnightSixDaysClients }}
+                <span>Asesorados: </span>{{ fortnightClientsPerDays(1, "6") }}
               </div>
               <div class="info">
-                <span>Mensualidades: </span>
-                {{ currentFortnightSixDaysClientsPayment | currency }}
+                <span>Pendientes: </span
+                >{{ fortnightClientsPerDays(1, "6", false) }}
+              </div>
+              <div class="info">
+                <span>Total pendientes: </span>
+                {{ fortnightClientsPaymentPerDays(1, "6", false) | currency }}
+              </div>
+              <div class="info">
+                <span>Total asesorados: </span>
+                {{ fortnightClientsPaymentPerDays(1, "6") | currency }}
               </div>
             </div>
           </div>
@@ -71,8 +55,69 @@
             <div class="info">
               <span>Asesorados: </span
               >{{
-                currentFortnightThreeDaysClientsPayment +
-                  currentFortnightSixDaysClientsPayment | currency
+                fortnightClientsPaymentPerDays(1, "3") +
+                  fortnightClientsPaymentPerDays(1, "6") | currency
+              }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Segunda quincena -->
+    <div class="progress-card-container">
+      <div class="fort-night-card progress-card">
+        <div class="progress-header">
+          <span>Segunda quincena del mes</span>
+        </div>
+        <div class="progress-card-body">
+          <div class="fort-night-container">
+            <span>Plan 3 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ fortnightClientsPerDays(2, "3") }}
+              </div>
+              <div class="info">
+                <span>Pendientes: </span
+                >{{ fortnightClientsPerDays(2, "3", false) }}
+              </div>
+              <div class="info">
+                <span>Total pendientes: </span>
+                {{ fortnightClientsPaymentPerDays(2, "3", false) | currency }}
+              </div>
+              <div class="info">
+                <span>Total asesorados: </span>
+                {{ fortnightClientsPaymentPerDays(2, "3") | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Plan 6 dias a la semana</span>
+            <div class="inline">
+              <div class="info">
+                <span>Asesorados: </span>{{ fortnightClientsPerDays(2, "6") }}
+              </div>
+              <div class="info">
+                <span>Pendientes: </span
+                >{{ fortnightClientsPerDays(2, "6", false) }}
+              </div>
+              <div class="info">
+                <span>Total pendientes: </span>
+                {{ fortnightClientsPaymentPerDays(2, "6", false) | currency }}
+              </div>
+              <div class="info">
+                <span>Total asesorados: </span>
+                {{ fortnightClientsPaymentPerDays(2, "6") | currency }}
+              </div>
+            </div>
+          </div>
+          <div class="fort-night-container">
+            <span>Total quincena</span>
+            <div class="info">
+              <span>Asesorados: </span
+              >{{
+                fortnightClientsPaymentPerDays(2, "3") +
+                  fortnightClientsPaymentPerDays(2, "6") | currency
               }}
             </div>
           </div>
