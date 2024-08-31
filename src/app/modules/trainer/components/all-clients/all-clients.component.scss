@@ -3,6 +3,17 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    .filter-container {
+      width: 90%;
+      border: 1px solid rgb(163, 163, 163);
+      border-radius: 10px;
+      padding: 6px;
+      form {
+        mat-slide-toggle {
+          margin: 8px;
+        }
+      }
+    }
   }
   h1 {
     font-size: 28px;

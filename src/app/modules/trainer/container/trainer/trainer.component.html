@@ -4,6 +4,7 @@
   <app-all-clients
     *ngSwitchCase="'Asesorados'"
     [clients]="clients"
+    [clientsBackup]="clients"
     (mainSearch)="applyFilter($event)"
   ></app-all-clients>
   <app-add-clients

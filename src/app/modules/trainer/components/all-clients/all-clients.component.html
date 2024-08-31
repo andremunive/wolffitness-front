@@ -7,6 +7,20 @@
       placeholder="Busqueda por nombre..."
       (ngModelChange)="search()"
     />
+    <div class="filter-container">
+      <form [formGroup]="filterForm" class="filter-form">
+        <mat-slide-toggle formControlName="activos">Activos</mat-slide-toggle>
+        <mat-slide-toggle formControlName="pendientes"
+          >Pendientes</mat-slide-toggle
+        >
+        <mat-slide-toggle formControlName="primeraQuincena"
+          >Primera Quincena</mat-slide-toggle
+        >
+        <mat-slide-toggle formControlName="segundaQuincena"
+          >Segunda Quincena</mat-slide-toggle
+        >
+      </form>
+    </div>
   </div>
   <div *ngIf="clients?.length" class="card-container">
     <app-card

@@ -224,7 +224,6 @@ export class ProgressComponent implements OnInit {
         client.attributes.plan == '6 dias a la semana'
       );
     });
-    console.log(filteredClients);
 
     if (filteredClients?.length > 7) {
       const bonusClients = filteredClients?.slice(7);
