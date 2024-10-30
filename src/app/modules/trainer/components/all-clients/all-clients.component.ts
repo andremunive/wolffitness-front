@@ -61,7 +61,11 @@ export class AllClientsComponent implements OnInit {
 
     if (filters.primeraQuincena) {
       filteredClients = filteredClients.filter((client) =>
-        this.fortnightClients(1, client.attributes.startDate)
+        this.fortnightClients(
+          1,
+          client.attributes.startDate,
+          client.attributes.name
+        )
       );
     }
 
@@ -74,10 +78,12 @@ export class AllClientsComponent implements OnInit {
     this.clients = filteredClients;
   }
 
-  fortnightClients(fortnight: number, date: Date): boolean {
+  fortnightClients(fortnight: number, date: Date, name?: string): boolean {
     let startOfFortnight: Date;
     let endOfFortnight: Date;
     const startDate = new Date(date);
+    startDate.setDate(startDate.getDate() + 1);
+    console.log({ name: name, date: startDate });
     if (fortnight == 1) {
       // Primera quincena del mes
       startOfFortnight = new Date(this.currentYear, this.currentMonth, 1);

@@ -131,6 +131,7 @@ export class ProgressComponent implements OnInit {
     if (hasPaid == false) {
       return this.clients?.filter((client) => {
         const startDate = new Date(client.attributes.startDate);
+        startDate.setDate(startDate.getDate() + 1);
         return (
           startDate >= startOfFortnight &&
           startDate <= endOfFortnight &&
@@ -141,6 +142,7 @@ export class ProgressComponent implements OnInit {
     }
     return this.clients?.filter((client) => {
       const startDate = new Date(client.attributes.startDate);
+      startDate.setDate(startDate.getDate() + 1);
       return (
         startDate >= startOfFortnight &&
         startDate <= endOfFortnight &&
@@ -184,6 +186,7 @@ export class ProgressComponent implements OnInit {
     if (hasPaid == false) {
       filteredClients = this.clients?.filter((client) => {
         const startDate = new Date(client.attributes.startDate);
+        startDate.setDate(startDate.getDate() + 1);
         return (
           startDate >= startOfFortnight &&
           startDate <= endOfFortnight &&
@@ -194,6 +197,7 @@ export class ProgressComponent implements OnInit {
     } else {
       filteredClients = this.clients?.filter((client) => {
         const startDate = new Date(client.attributes.startDate);
+        startDate.setDate(startDate.getDate() + 1);
         return (
           startDate >= startOfFortnight &&
           startDate <= endOfFortnight &&
