@@ -22,6 +22,7 @@ export interface Attributes {
   updatedAt: Date;
   whatsapp: string;
   hasPaid: boolean;
+  reasonForChanges?: string;
 }
 
 export interface Meta {

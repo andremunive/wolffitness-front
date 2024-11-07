@@ -83,7 +83,6 @@ export class AllClientsComponent implements OnInit {
     let endOfFortnight: Date;
     const startDate = new Date(date);
     startDate.setDate(startDate.getDate() + 1);
-    console.log({ name: name, date: startDate });
     if (fortnight == 1) {
       // Primera quincena del mes
       startOfFortnight = new Date(this.currentYear, this.currentMonth, 1);

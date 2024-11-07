@@ -15,13 +15,12 @@
         }
       }
     }
-    .save-btn {
-      width: 100%;
+    .actions-btn {
       display: flex;
-      justify-content: center;
-      margin-top: 16px;
+      justify-content: space-between;
+      align-items: center;
       button {
-        width: 30%;
+        width: 40%;
       }
     }
   }

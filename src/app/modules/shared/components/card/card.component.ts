@@ -34,6 +34,8 @@ export class CardComponent {
         endDate: this.client.endDate,
         hasPaid: this.client.hasPaid,
         name: this.client.name,
+        plan: this.client.plan,
+        monthlyPayment: this.client.monthlyPayment,
       },
     });
   }
