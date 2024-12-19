@@ -3,8 +3,6 @@
 <div class="content" [ngSwitch]="page">
   <app-all-clients
     *ngSwitchCase="'Asesorados'"
-    [clients]="clients"
-    [clientsBackup]="clients"
     (mainSearch)="applyFilter($event)"
   ></app-all-clients>
   <app-add-clients
@@ -12,4 +10,5 @@
     (register)="registerUser($event)"
   ></app-add-clients>
   <app-progress *ngSwitchCase="'Progreso'" [clients]="clients"></app-progress>
+  <app-assessment *ngSwitchCase="'Valoracion'"></app-assessment>
 </div>

@@ -62,18 +62,14 @@
           <td>{{ client.attributes.name }}</td>
           <td>{{ client.attributes.trainer }}</td>
           <td>{{ client.attributes.whatsapp }}</td>
-          <td>{{ client.attributes.startDate | date : "dd/MM/yyyy" }}</td>
+          <td>{{ client.attributes.endDate | date : "dd/MM/yyyy" }}</td>
           <td>{{ client.attributes.endDate | date : "dd/MM/yyyy" }}</td>
           <td>{{ client.attributes.plan }}</td>
-          <td class="false" [ngClass]="{ true: client.attributes.discount }">
-            {{ client.attributes.discount ? "Si" : "No" }}
+          <td class="false">
+            {{ "No" }}
           </td>
           <td>
-            {{
-              client.attributes.discountDescription
-                ? client.attributes.discountDescription
-                : "No aplica"
-            }}
+            {{ "" }}
           </td>
           <td>{{ client.attributes.monthlyPayment | currency }}</td>
           <td

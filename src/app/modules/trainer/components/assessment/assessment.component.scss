@@ -1,0 +1,16 @@
+h2,
+h4 {
+  text-align: center;
+  margin: 0;
+}
+.header {
+  display: flex;
+  flex-direction: column;
+}
+.body-measurements,
+.body-folds {
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 2 columnas del mismo tamaño */
+  gap: 10px; /* Espacio entre columnas y filas */
+}

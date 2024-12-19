@@ -68,18 +68,18 @@ export class EditClientComponent {
         },
       };
 
-      this._client
-        .getUserByName(this.data.name)
-        .pipe(
-          switchMap((res: ClientModel) => {
-            return this._client.makePayment(user, res.data[0].id);
-          })
-        )
-        .subscribe(() => {
-          this._global.updateUserUpdated(true);
-          this.toast.success('Usuario actualizado', 'Exito');
-          this.dialogRef.close();
-        });
+      // this._client
+      //   .getUserByName(this.data.name)
+      //   .pipe(
+      //     switchMap((res: ClientModel) => {
+      //       return this._client.makePayment(user, res.data[0].id);
+      //     })
+      //   )
+      //   .subscribe(() => {
+      //     this._global.updateUserUpdated(true);
+      //     this.toast.success('Usuario actualizado', 'Exito');
+      //     this.dialogRef.close();
+      //   });
     }
   }
   onAdvancedSubmit(): void {
@@ -95,18 +95,18 @@ export class EditClientComponent {
         },
       };
 
-      this._client
-        .getUserByName(this.data.name)
-        .pipe(
-          switchMap((res: ClientModel) => {
-            return this._client.makePayment(user, res.data[0].id);
-          })
-        )
-        .subscribe(() => {
-          this._global.updateUserUpdated(true);
-          this.toast.success('Usuario actualizado', 'Exito');
-          this.dialogRef.close();
-        });
+      // this._client
+      //   .getUserByName(this.data.name)
+      //   .pipe(
+      //     switchMap((res: ClientModel) => {
+      //       return this._client.makePayment(user, res.data[0].id);
+      //     })
+      //   )
+      //   .subscribe(() => {
+      //     this._global.updateUserUpdated(true);
+      //     this.toast.success('Usuario actualizado', 'Exito');
+      //     this.dialogRef.close();
+      //   });
     }
   }
 

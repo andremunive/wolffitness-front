@@ -1,3 +1,18 @@
+.main-search {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.filters {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 9px;
+  background-color: #f8f9fa;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 16px;
+}
+
 .all-clients-container {
   .clients-header {
     display: flex;

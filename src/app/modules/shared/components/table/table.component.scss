@@ -1,0 +1,15 @@
+.status-circle {
+  display: inline-block;
+  width: 10px; /* Tamaño del círculo */
+  height: 10px; /* Tamaño del círculo */
+  border-radius: 50%; /* Hacerlo circular */
+  margin-right: 8px; /* Espacio entre el círculo y el texto */
+}
+
+.status-circle.active {
+  background-color: #4caf50; /* Verde para activo */
+}
+
+.status-circle.inactive {
+  background-color: #9e9e9e; /* Gris para inactivo */
+}

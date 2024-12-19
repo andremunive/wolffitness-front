@@ -1,32 +1,62 @@
-<div class="all-clients-container">
-  <div class="clients-header">
-    <h1>Mis asesorados</h1>
-    <input
-      [(ngModel)]="mainSearchValue"
-      type="text"
-      placeholder="Busqueda por nombre..."
-      (ngModelChange)="search()"
-    />
-    <div class="filter-container">
-      <form [formGroup]="filterForm" class="filter-form">
-        <mat-slide-toggle formControlName="activos">Activos</mat-slide-toggle>
-        <mat-slide-toggle formControlName="pendientes"
-          >Pendientes</mat-slide-toggle
-        >
-        <mat-slide-toggle formControlName="primeraQuincena"
-          >Primera Quincena</mat-slide-toggle
-        >
-        <mat-slide-toggle formControlName="segundaQuincena"
-          >Segunda Quincena</mat-slide-toggle
-        >
-      </form>
-    </div>
+<h1 style="text-align: center">Mis asesorados</h1>
+<div class="d-flex align-items-center main-search">
+  <input
+    type="text"
+    class="form-control me-2"
+    placeholder="Buscar"
+    aria-label="Buscar"
+  />
+  <button
+    class="btn btn-outline-secondary me-2"
+    type="button"
+    (click)="toggleFilters()"
+  >
+    Filtros
+  </button>
+  <button class="btn btn-primary" (click)="addUser()" type="button">
+    Agregar
+  </button>
+</div>
+
+<!-- Contenedor de filtros -->
+<div class="filters" *ngIf="showFilters" [@filterAnimation]>
+  <div class="me-3">
+    <label for="mesSelect" class="form-label">Mes</label>
+    <select id="mesSelect" class="form-select">
+      <option value="enero">Enero</option>
+      <option value="febrero">Febrero</option>
+      <option value="marzo">Marzo</option>
+      <option value="abril">Abril</option>
+      <option value="mayo">Mayo</option>
+      <option value="junio">Junio</option>
+      <option value="julio">Julio</option>
+      <option value="agosto">Agosto</option>
+      <option value="septiembre">Septiembre</option>
+      <option value="octubre">Octubre</option>
+      <option value="noviembre">Noviembre</option>
+      <option value="diciembre">Diciembre</option>
+    </select>
   </div>
-  <div *ngIf="clients?.length" class="card-container">
-    <app-card
-      class="card-element"
-      *ngFor="let client of clients"
-      [client]="client.attributes"
-    ></app-card>
+  <div class="">
+    <label for="quincenaSelect" class="form-label">Quincena</label>
+    <select id="quincenaSelect" class="form-select">
+      <option value="primera">Primera quincena</option>
+      <option value="segunda">Segunda quincena</option>
+    </select>
   </div>
 </div>
+
+<app-table
+  *ngIf="!isMobile"
+  style="padding: 20px"
+  [clients]="clients"
+  [pagination]="pagination"
+  (paginationChange)="onPageChange($event)"
+></app-table>
+
+<app-card
+  *ngIf="isMobile"
+  [clients]="clients"
+  [pagination]="pagination"
+  (paginationChange)="onPageChange($event)"
+></app-card>

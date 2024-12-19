@@ -1,27 +1,17 @@
-.add-clients-container {
-  .add-client-header {
+main {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  h2 {
+    text-align: center;
+    width: 100%;
+    margin: 0;
+  }
+  form {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    h1 {
-      font-size: 28px;
-      font-weight: 600;
-    }
-  }
-  .form-container {
-    .form-wrapper {
-      margin: 16px 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 22px;
-    }
-    .save-btn {
+    mat-form-field {
       width: 100%;
-      display: flex;
-      justify-content: center;
-      button {
-        width: 30%;
-      }
     }
   }
 }

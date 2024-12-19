@@ -1,37 +1,49 @@
-<div class="card-container" (click)="openDialog()">
-  <div class="card-header">
-    <span>{{ client.name }}</span>
-    <div
-      class="status-indicator"
-      [class.active]="isActive"
-      matTooltip="{{ isActive ? 'Activo' : 'Inactivo' }}"
-    ></div>
+<div class="card-container">
+  <div class="cards" *ngFor="let client of clients">
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title>
+          <span
+            class="status-circle"
+            [ngClass]="{
+              active: isActive(client),
+              inactive: !isActive(client)
+            }"
+          ></span>
+          {{ client.attributes.name }}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          <strong>Estado: </strong>
+          {{ client.attributes.status == "paid" ? "Al dia" : "Pendiente" }}
+        </p>
+        <p><strong>Plan: </strong> {{ client.attributes.plan }}</p>
+        <p>
+          <strong>Mensualidad: </strong>
+          {{ client.attributes.monthlyPayment | currency }}
+        </p>
+        <p>
+          <strong>Vence: </strong>
+          {{ client.attributes.endDate | date : "shortDate" }}
+        </p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>Editar</button>
+        <button mat-button (click)="openPayment(client)">Pago</button>
+        <button mat-button (click)="openAssessment(client)">Valoracion</button>
+        <button mat-button>Eliminar</button>
+      </mat-card-actions>
+    </mat-card>
   </div>
-  <div class="line"></div>
-  <div class="card-body">
-    <div class="inline container">
-      <div class="inline">
-        <mat-icon>date_range</mat-icon>
-        <span>{{ client.endDate }}</span>
-      </div>
-      <div class="inline">
-        <mat-icon>calendar_today</mat-icon>
-        <span>{{ client.plan }}</span>
-      </div>
-    </div>
-    <div class="inline container">
-      <div class="inline">
-        <mat-icon>phone</mat-icon>
-        <span>{{ client.whatsapp }}</span>
-      </div>
-      <div class="inline">
-        <mat-icon>attach_money</mat-icon>
-        <span>{{ client.monthlyPayment | currency }}</span>
-      </div>
-    </div>
-    <div class="inline plan">
-      <mat-icon>{{ client.hasPaid ? "check_circle" : "warning" }}</mat-icon>
-      <span>{{ client.hasPaid ? "Al dia" : "Pendiente" }}</span>
-    </div>
-  </div>
+  <!-- Paginador -->
+  <mat-paginator
+    style="padding-bottom: 15px"
+    [length]="pagination?.total"
+    [pageSizeOptions]="[10, 25, 50]"
+    [pageSize]="pagination?.pageSize"
+    [pageIndex]="pagination?.page - 1"
+    (page)="onPageChange($event)"
+  >
+  </mat-paginator>
 </div>

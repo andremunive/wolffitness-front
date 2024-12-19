@@ -1,0 +1,159 @@
+<main>
+  <h2 mat-dialog-title>Pago</h2>
+  <h3>{{ data.attributes.name }}</h3>
+  <form
+    [formGroup]="paymentRecordForm"
+    (ngSubmit)="submit()"
+    *ngIf="data.attributes.status != 'pending'"
+  >
+    <mat-dialog-content>
+      <!-- Fecha de pago -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Fecha de pago</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="paymentDate"
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="paymentRecordForm.get('date')?.hasError('required')">
+          Campo obligatorio
+        </mat-error>
+      </mat-form-field>
+      <!-- Plan -->
+      <h4>Plan</h4>
+      <mat-button-toggle-group
+        formControlName="plan"
+        appearance="standard"
+        [value]="paymentRecordForm.value['plan']"
+        name="planSelection"
+      >
+        <mat-button-toggle class="plan-button" value="3 dias"
+          >3 días</mat-button-toggle
+        >
+        <mat-button-toggle class="plan-button" value="6 dias"
+          >6 días</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+      <!-- Mensualidad -->
+      <h4>Mensualidad</h4>
+      <mat-button-toggle-group
+        formControlName="amount"
+        appearance="standard"
+        [value]="paymentRecordForm.value['amount']"
+        name="planSelection"
+      >
+        <mat-button-toggle class="payment-button" value="80000"
+          >$80.000</mat-button-toggle
+        >
+        <mat-button-toggle class="payment-button" value="120000"
+          >$120.000</mat-button-toggle
+        >
+        <mat-button-toggle class="payment-button" value="otro"
+          >Otro</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+
+      <!-- Descuentos -->
+      <div class="discounts" *ngIf="hasDiscount">
+        <h4>Descuento</h4>
+        <!-- Descuento -->
+        <mat-form-field
+          style="margin-top: 12px"
+          appearance="fill"
+          class="full-width"
+        >
+          <mat-label>Descuento</mat-label>
+          <input matInput formControlName="discountAmount" />
+          <mat-error
+            *ngIf="
+              paymentRecordForm.get('discountAmount')?.hasError('required')
+            "
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Razon del descuento -->
+        <h4>Razon del dcto</h4>
+        <mat-button-toggle-group
+          formControlName="discountReason"
+          appearance="standard"
+          [value]="paymentRecordForm.value['discountReason']"
+          name="planSelection"
+        >
+          <mat-button-toggle class="plan-button" value="Personal"
+            >Personal</mat-button-toggle
+          >
+          <mat-button-toggle class="plan-button" value="Promocion"
+            >Promocion</mat-button-toggle
+          >
+        </mat-button-toggle-group>
+      </div>
+      <!-- Estatus -->
+      <h4>Estatus</h4>
+      <mat-button-toggle-group
+        formControlName="status"
+        appearance="standard"
+        [value]="paymentRecordForm.value['status']"
+        name="planSelection"
+      >
+        <mat-button-toggle class="plan-button" value="pending"
+          >Pendiente</mat-button-toggle
+        >
+        <mat-button-toggle class="plan-button" value="paid"
+          >Al dia</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        Cancelar
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="!paymentRecordForm.valid"
+      >
+        Guardar
+      </button>
+    </mat-dialog-actions>
+  </form>
+
+  <form
+    [formGroup]="editPaymentRecordForm"
+    (ngSubmit)="updatePaymentRecord()"
+    *ngIf="data.attributes.status === 'pending'"
+  >
+    <mat-dialog-content>
+      <mat-button-toggle-group
+        formControlName="status"
+        appearance="standard"
+        [value]="editPaymentRecordForm.value['status']"
+        name="planSelection"
+      >
+        <mat-button-toggle style="width: 60%" value="pending"
+          >Pendiente</mat-button-toggle
+        >
+        <mat-button-toggle style="width: 40%" value="paid"
+          >Al dia</mat-button-toggle
+        >
+      </mat-button-toggle-group>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        Cancelar
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="!editPaymentRecordForm.valid"
+      >
+        Guardar
+      </button>
+    </mat-dialog-actions>
+  </form>
+</main>

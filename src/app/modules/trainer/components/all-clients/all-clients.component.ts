@@ -2,131 +2,100 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
-  Input,
   OnInit,
   Output,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { Datum } from 'src/app/core/models/client.model';
-import { EditClientComponent } from '../edit-client/edit-client.component';
+import {
+  ClientModel,
+  Datum,
+  Pagination,
+} from 'src/app/core/models/client.model';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { ClientsService } from 'src/app/services/clients.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddClientsComponent } from '../add-clients/add-clients.component';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-all-clients',
   templateUrl: './all-clients.component.html',
   styleUrls: ['./all-clients.component.scss'],
+  animations: [
+    trigger('filterAnimation', [
+      transition(':enter', [
+        style({ height: 0, opacity: 0 }),
+        animate('300ms ease-out', style({ height: '*', opacity: 1 })),
+      ]),
+      transition(':leave', [
+        animate('300ms ease-in', style({ height: 0, opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class AllClientsComponent implements OnInit {
-  @Input() clients: Datum[] = [];
+  clients: Datum[] = [];
+  pagination: Pagination;
   @Output() mainSearch = new EventEmitter();
   filterForm: FormGroup;
-  @Input() clientsBackup: Datum[] = [];
+
+  isMobile: boolean = false;
 
   mainSearchValue = '';
   currentDate = new Date();
   currentYear = this.currentDate.getFullYear();
   currentMonth = this.currentDate.getMonth();
+  showFilters: boolean = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
-    this.filterForm = this.fb.group({
-      activos: [false],
-      pendientes: [false],
-      primeraQuincena: [false],
-      segundaQuincena: [false],
-    });
+  constructor(
+    private fb: FormBuilder,
+    private clientService: ClientsService,
+    private dialog: MatDialog,
+    private breakpointObserver: BreakpointObserver,
+    private _global: GlobalService
+  ) {
+    // this.filterForm = this.fb.group({
+    //   activos: [false],
+    //   pendientes: [false],
+    //   primeraQuincena: [false],
+    //   segundaQuincena: [false],
+    // });
+  }
+
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
   }
 
   ngOnInit(): void {
-    // Suscribirse a los cambios del formulario para llamar la API cada vez que se cambie un valor
-    this.filterForm.valueChanges.subscribe((values) => {
-      this.applyFilters(values);
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+    this.getUsers();
+
+    this._global.getDataUpdatedObservable().subscribe((value: boolean) => {
+      if (value) this.getUsers();
     });
   }
 
-  applyFilters(filters: any): void {
-    let filteredClients = [...this.clientsBackup];
-
-    if (filters.activos) {
-      filteredClients = filteredClients.filter((client) =>
-        this.isActive(client.attributes.endDate)
-      );
-    }
-
-    if (filters.pendientes) {
-      filteredClients = filteredClients.filter(
-        (client) => client.attributes.hasPaid == false
-      );
-    }
-
-    if (filters.primeraQuincena) {
-      filteredClients = filteredClients.filter((client) =>
-        this.fortnightClients(
-          1,
-          client.attributes.startDate,
-          client.attributes.name
-        )
-      );
-    }
-
-    if (filters.segundaQuincena) {
-      filteredClients = filteredClients.filter((client) =>
-        this.fortnightClients(2, client.attributes.startDate)
-      );
-    }
-
-    this.clients = filteredClients;
+  getUsers(pagination?: any) {
+    const pageSize = pagination ? pagination.pageSize + '' : '10';
+    const page = pagination ? pagination.pageIndex + 1 + '' : '1';
+    this.clientService
+      .getUsersByTrainerLogged(pageSize, page)
+      .subscribe((res: ClientModel) => {
+        this.clients = res.data.data;
+        this.pagination = res.meta.pagination;
+      });
   }
 
-  fortnightClients(fortnight: number, date: Date, name?: string): boolean {
-    let startOfFortnight: Date;
-    let endOfFortnight: Date;
-    const startDate = new Date(date);
-    startDate.setDate(startDate.getDate() + 1);
-    if (fortnight == 1) {
-      // Primera quincena del mes
-      startOfFortnight = new Date(this.currentYear, this.currentMonth, 1);
-      endOfFortnight = new Date(
-        this.currentYear,
-        this.currentMonth,
-        15,
-        23,
-        59,
-        59
-      ); // Final del 15 de mes
-    } else if (fortnight == 2) {
-      // Segunda quincena del mes
-      startOfFortnight = new Date(this.currentYear, this.currentMonth, 16);
-      endOfFortnight = new Date(
-        this.currentYear,
-        this.currentMonth + 1,
-        0,
-        23,
-        59,
-        59
-      );
-    }
-    if (startDate >= startOfFortnight && startDate <= endOfFortnight) {
-      return true;
-    }
-    return false;
+  onPageChange(pagination: any) {
+    this.getUsers(pagination);
   }
 
-  isActive(date: Date): boolean {
-    let dateFormat = new Date(date);
-    dateFormat.setHours(0, 0, 0, 0);
-    dateFormat.setDate(dateFormat.getDate() + 1);
-
-    let currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-
-    if (dateFormat >= currentDate) {
-      return true;
-    }
-    return false;
-  }
-
-  search() {
-    this.mainSearch.emit(this.mainSearchValue);
+  addUser() {
+    const dialogRef = this.dialog.open(AddClientsComponent);
   }
 }

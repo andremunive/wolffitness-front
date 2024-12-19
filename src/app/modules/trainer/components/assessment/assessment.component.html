@@ -1,0 +1,205 @@
+<main>
+  <h2 mat-dialog-title>Valoracion</h2>
+  <form [formGroup]="bodyMeasurementsForm" (ngSubmit)="submit()">
+    <mat-dialog-content>
+      <div class="header">
+        <!-- Fecha de medidas -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Fecha</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="date" />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('date')?.hasError('required')"
+          >
+            La fecha es obligatoria.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Peso -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Peso (Kg)</mat-label>
+          <input type="number" matInput formControlName="weight" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('weight')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Altura -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Altura (cm)</mat-label>
+          <input type="number" matInput formControlName="height" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('height')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <h4>Circunferencias</h4>
+      <div class="body-measurements">
+        <!-- Pecho -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pecho</mat-label>
+          <input type="number" matInput formControlName="chest" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('chest')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Abdomen -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Abdomen</mat-label>
+          <input type="number" matInput formControlName="abdomen" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('abdomen')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Brazo derecho -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Brazo derecho</mat-label>
+          <input type="number" matInput formControlName="rightArm" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('rightArm')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Brazo izquierdo -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Brazo izquierdo</mat-label>
+          <input type="number" matInput formControlName="leftArm" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('leftArm')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Gluteos -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Gluteos</mat-label>
+          <input type="number" matInput formControlName="glutes" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('glutes')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Muslo derecho -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Muslo derecho</mat-label>
+          <input type="number" matInput formControlName="rightThigh" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('rightThigh')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Muslo izquierdo -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Muslo izquierdo</mat-label>
+          <input type="number" matInput formControlName="leftThigh" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('leftThigh')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Pantorrilla derecha -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pantorrilla derecha</mat-label>
+          <input type="number" matInput formControlName="rightCalf" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('rightCalf')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+        <!-- Pantorrilla izquierda -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pantorrilla izquierda</mat-label>
+          <input type="number" matInput formControlName="leftCalf" />
+          <mat-error
+            *ngIf="bodyMeasurementsForm.get('leftCalf')?.hasError('required')"
+          >
+            Campo obligatorio
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <h4>Pliegues</h4>
+      <div class="body-folds">
+        <!-- Pectoral -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Pectoral</mat-label>
+          <input type="number" matInput formControlName="chestFold" />
+        </mat-form-field>
+        <!-- Midaxilar -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Midaxilar</mat-label>
+          <input type="number" matInput formControlName="midaxillaryFold" />
+        </mat-form-field>
+        <!-- Subescapular -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Subescapular</mat-label>
+          <input type="number" matInput formControlName="subscapularisFold" />
+        </mat-form-field>
+        <!-- Bicipital -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Bicipital</mat-label>
+          <input type="number" matInput formControlName="bicepFold" />
+        </mat-form-field>
+        <!-- Tricipital -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Tricipital</mat-label>
+          <input type="number" matInput formControlName="tricepFold" />
+        </mat-form-field>
+        <!-- Abdominal -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Abdominal</mat-label>
+          <input type="number" matInput formControlName="abdomenFold" />
+        </mat-form-field>
+        <!-- Suprailiaco -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Suprailiaco</mat-label>
+          <input type="number" matInput formControlName="suprailiacFold" />
+        </mat-form-field>
+        <!-- Cuadricipital -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Cuadricipital</mat-label>
+          <input type="number" matInput formControlName="thighFold" />
+        </mat-form-field>
+        <!-- Peroneal -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Peroneal</mat-label>
+          <input type="number" matInput formControlName="calfFold" />
+        </mat-form-field>
+        <!-- % de grasa -->
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>% de grasa</mat-label>
+          <input matInput formControlName="bodyFatPercentage" type="number" />
+        </mat-form-field>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="!bodyMeasurementsForm.valid"
+      >
+        Guardar
+      </button>
+    </mat-dialog-actions>
+  </form>
+</main>

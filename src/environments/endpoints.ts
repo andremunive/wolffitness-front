@@ -5,6 +5,15 @@ const authMethod = {
 const usersMethod = {
   getUsers: 'clients',
   getTrainers: 'trainers',
+  getByTrainer: 'trainer',
+};
+
+const paymentsMethod = {
+  paymentRecords: 'payment-records',
+};
+
+const measurementMethod = {
+  measurements: 'measurements',
 };
 
 export const host = {
@@ -13,5 +22,11 @@ export const host = {
   },
   users: {
     methods: usersMethod,
+  },
+  measurement: {
+    methods: measurementMethod,
+  },
+  payment: {
+    methods: paymentsMethod,
   },
 };

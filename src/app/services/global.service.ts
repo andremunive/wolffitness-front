@@ -7,10 +7,20 @@ import { BehaviorSubject } from 'rxjs';
 export class GlobalService {
   private pageSelected: BehaviorSubject<string>;
   private userUpdated: BehaviorSubject<boolean>;
+  private dataUpdated: BehaviorSubject<boolean>;
 
   constructor() {
     this.pageSelected = new BehaviorSubject<string>('Asesorados');
     this.userUpdated = new BehaviorSubject<boolean>(false);
+    this.dataUpdated = new BehaviorSubject<boolean>(false);
+  }
+
+  getDataUpdatedObservable() {
+    return this.dataUpdated.asObservable();
+  }
+
+  updateDataUpdated(value: boolean) {
+    this.dataUpdated.next(value);
   }
 
   getPageSelectedObservable() {

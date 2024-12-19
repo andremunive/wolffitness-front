@@ -11,6 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { CardComponent } from './components/card/card.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -24,10 +29,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     CommonModule,
     NgxSpinnerModule,
     MatToolbarModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
+    MatCardModule,
     MatIconModule,
     MatButtonModule,
     MatMenuModule,
     MatTooltipModule,
+    NgxPaginationModule,
   ],
   exports: [
     SideBarComponent,

@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ClientModel, Datum } from 'src/app/core/models/client.model';
 import { ClientsService } from 'src/app/services/clients.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-all-clients',
@@ -15,10 +16,20 @@ export class AllClientsComponent implements OnInit {
   @Input() copyClients: Datum[];
 
   filterForm: FormGroup;
+  isMobile: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private toast: ToastrService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private toast: ToastrService,
+    private breakpointObserver: BreakpointObserver
+  ) {}
 
   ngOnInit(): void {
+    this.breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
     this.initFilterForm();
     this.toFilter();
   }
@@ -68,8 +79,8 @@ export class AllClientsComponent implements OnInit {
     if (startDate && endDate) {
       this.clients = this.clients.filter(
         (client) =>
-          client.attributes.startDate >= startDate &&
-          client.attributes.startDate <= endDate
+          client.attributes.endDate >= endDate &&
+          client.attributes.endDate <= endDate
       );
     }
   }

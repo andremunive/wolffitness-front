@@ -21,9 +21,9 @@ export class ProgressComponent implements OnInit {
     const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
 
     return this.clients?.filter((client) => {
-      const startDate = new Date(client?.attributes.startDate);
-      const startYear = startDate.getFullYear();
-      const startMonth = startDate.getMonth();
+      const endDate = new Date(client?.attributes.endDate);
+      const startYear = endDate.getFullYear();
+      const startMonth = endDate.getMonth();
 
       return (
         startYear === currentYear &&
@@ -39,9 +39,9 @@ export class ProgressComponent implements OnInit {
     const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
 
     return this.clients?.filter((client) => {
-      const startDate = new Date(client?.attributes.startDate);
-      const startYear = startDate.getFullYear();
-      const startMonth = startDate.getMonth();
+      const endDate = new Date(client?.attributes.endDate);
+      const startYear = endDate.getFullYear();
+      const startMonth = endDate.getMonth();
 
       return (
         startYear === currentYear &&
@@ -57,9 +57,9 @@ export class ProgressComponent implements OnInit {
     const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
 
     const filteredClients = this.clients?.filter((client) => {
-      const startDate = new Date(client?.attributes.startDate);
-      const startYear = startDate.getFullYear();
-      const startMonth = startDate.getMonth();
+      const endDate = new Date(client?.attributes.endDate);
+      const startYear = endDate.getFullYear();
+      const startMonth = endDate.getMonth();
 
       return (
         startYear === currentYear &&
@@ -80,9 +80,9 @@ export class ProgressComponent implements OnInit {
     const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
 
     const filteredClients = this.clients?.filter((client) => {
-      const startDate = new Date(client?.attributes.startDate);
-      const startYear = startDate.getFullYear();
-      const startMonth = startDate.getMonth();
+      const endDate = new Date(client?.attributes.endDate);
+      const startYear = endDate.getFullYear();
+      const startMonth = endDate.getMonth();
 
       return (
         startYear === currentYear &&
@@ -130,22 +130,22 @@ export class ProgressComponent implements OnInit {
 
     if (hasPaid == false) {
       return this.clients?.filter((client) => {
-        const startDate = new Date(client.attributes.startDate);
-        startDate.setDate(startDate.getDate() + 1);
+        const endDate = new Date(client.attributes.endDate);
+        endDate.setDate(endDate.getDate() + 1);
         return (
-          startDate >= startOfFortnight &&
-          startDate <= endOfFortnight &&
+          endDate >= startOfFortnight &&
+          endDate <= endOfFortnight &&
           client.attributes.plan == `${plan} dias a la semana` &&
           client.attributes.hasPaid == false
         );
       }).length;
     }
     return this.clients?.filter((client) => {
-      const startDate = new Date(client.attributes.startDate);
-      startDate.setDate(startDate.getDate() + 1);
+      const endDate = new Date(client.attributes.endDate);
+      endDate.setDate(endDate.getDate() + 1);
       return (
-        startDate >= startOfFortnight &&
-        startDate <= endOfFortnight &&
+        endDate >= startOfFortnight &&
+        endDate <= endOfFortnight &&
         client.attributes.plan == `${plan} dias a la semana`
       );
     }).length;
@@ -185,22 +185,22 @@ export class ProgressComponent implements OnInit {
     let filteredClients;
     if (hasPaid == false) {
       filteredClients = this.clients?.filter((client) => {
-        const startDate = new Date(client.attributes.startDate);
-        startDate.setDate(startDate.getDate() + 1);
+        const endDate = new Date(client.attributes.endDate);
+        endDate.setDate(endDate.getDate() + 1);
         return (
-          startDate >= startOfFortnight &&
-          startDate <= endOfFortnight &&
+          endDate >= startOfFortnight &&
+          endDate <= endOfFortnight &&
           client.attributes.plan == `${plan} dias a la semana` &&
           client.attributes.hasPaid == false
         );
       });
     } else {
       filteredClients = this.clients?.filter((client) => {
-        const startDate = new Date(client.attributes.startDate);
-        startDate.setDate(startDate.getDate() + 1);
+        const endDate = new Date(client.attributes.endDate);
+        endDate.setDate(endDate.getDate() + 1);
         return (
-          startDate >= startOfFortnight &&
-          startDate <= endOfFortnight &&
+          endDate >= startOfFortnight &&
+          endDate <= endOfFortnight &&
           client.attributes.plan == `${plan} dias a la semana`
         );
       });
@@ -218,9 +218,9 @@ export class ProgressComponent implements OnInit {
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth(); // Enero es 0, Febrero es 1, etc.
     const filteredClients = this.clients?.filter((client) => {
-      const startDate = new Date(client?.attributes.startDate);
-      const startYear = startDate.getFullYear();
-      const startMonth = startDate.getMonth();
+      const endDate = new Date(client?.attributes.endDate);
+      const startYear = endDate.getFullYear();
+      const startMonth = endDate.getMonth();
 
       return (
         startYear === currentYear &&

@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
-import { ClientModel, Datum } from 'src/app/core/models/client.model';
+import {
+  ClientModel,
+  Datum,
+  Pagination,
+} from 'src/app/core/models/client.model';
 import { ToolbarModel } from 'src/app/core/models/toolbar.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ClientsService } from 'src/app/services/clients.service';
@@ -18,6 +22,7 @@ export class TrainerComponent implements OnInit {
   actionActive: string = 'clients';
   user: string = '';
   clients: Datum[];
+  pagination: Pagination;
   clientsBackUp: Datum[];
   makePaymentForm: FormGroup;
   registerUserForm: FormGroup;
@@ -34,6 +39,9 @@ export class TrainerComponent implements OnInit {
     {
       title: 'Progreso',
     },
+    {
+      title: 'Valoracion',
+    },
   ];
 
   constructor(
@@ -47,17 +55,15 @@ export class TrainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToChanges();
-    this.getUsers();
-    this.initForm();
-    this.initFilterForm();
-    this.toFilter();
+    // this.initForm();
+    // this.initFilterForm();
+    // this.toFilter();
   }
 
   listenToChanges() {
     this._global
       .getPageSelectedObservable()
       .subscribe((res) => (this.page = res));
-    this._global.getUserUpdatedObservable().subscribe((res) => this.getUsers());
   }
 
   initForm() {
@@ -93,15 +99,6 @@ export class TrainerComponent implements OnInit {
     return this.cookieStorageService.getCookie('user.name');
   }
 
-  getUsers() {
-    this.clientService
-      .getUsersByTrainerLogged()
-      .subscribe((res: ClientModel) => {
-        this.clients = res.data;
-        this.clientsBackUp = res.data;
-      });
-  }
-
   isActive(date: Date): string {
     let dateFormat = new Date(date);
     dateFormat.setHours(0, 0, 0, 0);
@@ -132,7 +129,6 @@ export class TrainerComponent implements OnInit {
     this.clientService.registerUser(event).subscribe(() => {
       this.initForm();
       this.toast.success('Usuario registrado', 'Exito');
-      this.getUsers();
     });
   }
 

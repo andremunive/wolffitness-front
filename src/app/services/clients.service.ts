@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieStorageService } from './cookie-storage.service';
 import { environment } from 'src/environments/environment';
@@ -14,9 +14,12 @@ export class ClientsService {
     private cookiesStorageService: CookieStorageService
   ) {}
 
-  getUsersByTrainerLogged(): Observable<ClientModel> {
+  getUsersByTrainerLogged(
+    pageSize: string,
+    page: string
+  ): Observable<ClientModel> {
     const trainer = this.cookiesStorageService.getCookie('user.name');
-    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?filters[trainer][$eq]=${trainer}&?sort=startDate&?pagination[page]=1&pagination[pageSize]=200`;
+    const url = `${environment.URL_BASE}${environment.host.users.methods.getByTrainer}/${trainer}?page=${page}&pageSize=${pageSize}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
@@ -31,13 +34,28 @@ export class ClientsService {
     return this.http.get<ClientModel>(url, { headers });
   }
 
-  makePayment(user: any, id) {
+  autocompleteClients(nameStart: string): Observable<ClientModel> {
+    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
-    const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}/${id}`;
-    return this.http.put(url, user, { headers });
+    const trainer = this.cookiesStorageService.getCookie('user.name');
+    const params = new HttpParams()
+      .set('filters[trainer][$eq]', trainer)
+      .set('filters[name][$startsWith]', nameStart)
+      .set('pagination[pageSize]', '5')
+      .set('pagination[page]', '1');
+
+    return this.http.get<ClientModel>(url, { params, headers });
   }
+
+  // makePayment(user: any, id) {
+  //   const headers = new HttpHeaders({
+  //     Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
+  //   });
+  //   const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}/${id}`;
+  //   return this.http.put(url, user, { headers });
+  // }
 
   getUserByName(userName: string): Observable<ClientModel> {
     const url = `${environment.URL_BASE}${environment.host.users.methods.getUsers}?filters[name][$eq]=${userName}`;

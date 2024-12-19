@@ -1,8 +1,12 @@
 export interface ClientModel {
-  data: Datum[];
+  data: data;
   meta: Meta;
 }
 
+export interface data {
+  data: Datum[];
+  meta: any;
+}
 export interface Datum {
   attributes: Attributes;
   id: number;
@@ -10,19 +14,18 @@ export interface Datum {
 
 export interface Attributes {
   createdAt: Date;
-  discount?: boolean;
-  discountDescription?: null;
   endDate?: Date;
   monthlyPayment?: number;
   name: string;
   plan?: string;
   publishedAt: Date;
-  startDate?: Date;
   trainer?: string;
   updatedAt: Date;
   whatsapp: string;
   hasPaid: boolean;
-  reasonForChanges?: string;
+  gender: string;
+  birthDate?: Date;
+  status?: string;
 }
 
 export interface Meta {

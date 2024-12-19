@@ -41,7 +41,7 @@ export class AdminComponent implements OnInit {
         break;
       case 'fortnight':
         this.trainerClients = this.copyTrainerClients.filter((client) =>
-          this.thisFortnight(client.attributes.startDate)
+          this.thisFortnight(client.attributes.endDate)
         );
     }
   }
@@ -58,7 +58,7 @@ export class AdminComponent implements OnInit {
         break;
       case 'fortnight':
         this.clients = this.copyClients.filter((client) =>
-          this.thisFortnight(client.attributes.startDate)
+          this.thisFortnight(client.attributes.endDate)
         );
     }
   }
@@ -91,7 +91,7 @@ export class AdminComponent implements OnInit {
 
   getTrainers() {
     this.clientService.getTrainers().subscribe((res: ClientModel) => {
-      this.trainers = res.data;
+      this.trainers = res.data.data;
     });
   }
 
@@ -104,7 +104,7 @@ export class AdminComponent implements OnInit {
 
   getUsers() {
     this.clientService.getAllUsers().subscribe((res: ClientModel) => {
-      this.clients = res.data;
+      this.clients = res.data.data;
       this.copyClients = this.clients;
     });
   }

@@ -30,7 +30,7 @@ export class ClientsFilterComponent implements OnInit, OnChanges {
 
   getUsers(trainer: string) {
     this.clientService.getAllUsers().subscribe((res: ClientModel) => {
-      this.clients = res.data.filter(
+      this.clients = res.data.data.filter(
         (client) => client.attributes.trainer === trainer
       );
       this.copyClients = this.clients;
@@ -49,7 +49,7 @@ export class ClientsFilterComponent implements OnInit, OnChanges {
         break;
       case 'fortnight':
         this.clients = this.copyClients.filter((client) =>
-          this.thisFortnight(client.attributes.startDate)
+          this.thisFortnight(client.attributes.endDate)
         );
     }
   }
