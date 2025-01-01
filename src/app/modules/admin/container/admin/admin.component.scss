@@ -1,3 +1,6 @@
+.content {
+  margin: 12px 20px 30px 20px;
+}
 .sidebar {
   background-color: black;
   height: 100vh;
@@ -88,16 +91,6 @@
     display: flex;
     justify-content: center;
   }
-  .filter {
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 100px;
-    align-items: center;
-    label {
-      font-weight: 600;
-    }
-    margin: 20px 0;
-  }
   .content-table {
     .false {
       color: red;
@@ -147,6 +140,67 @@
           width: 30%;
         }
       }
+    }
+  }
+}
+.filters-container {
+  form {
+    display: flex;
+    flex-direction: column;
+    .main-search {
+      margin-bottom: 15px;
+      display: flex;
+      input {
+        margin-right: 12px;
+      }
+    }
+    .other-filters {
+      display: flex;
+      .form-group {
+        margin-right: 12px;
+        width: 300px;
+      }
+    }
+  }
+  button {
+    width: 200px;
+    font-weight: 700;
+    height: 50%;
+  }
+  margin-bottom: 15px;
+}
+.contabilidad-container {
+  margin: 12px 0;
+  width: 100%;
+  height: 100px;
+  .c-table {
+    height: 100%;
+    width: 400px;
+    border: 2px solid rgb(136, 136, 136);
+    .title {
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+      width: 60%;
+      border-right: 2px solid rgb(136, 136, 136);
+      font-size: 17px;
+      font-weight: 700;
+    }
+    .c-data {
+      display: flex;
+      align-items: center;
+      padding-left: 8px;
+    }
+    .c-clients {
+      width: 100%;
+      height: 50%;
+      border-bottom: 2px solid rgb(136, 136, 136);
+      display: flex;
+    }
+    .c-money {
+      width: 100%;
+      height: 50%;
+      display: flex;
     }
   }
 }

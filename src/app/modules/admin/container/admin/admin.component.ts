@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientModel, Datum } from 'src/app/core/models/client.model';
+import { ToolbarModel } from 'src/app/core/models/toolbar.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
+import { GlobalService } from 'src/app/services/global.service';
 
 @Component({
   selector: 'app-admin',
@@ -10,6 +12,15 @@ import { CookieStorageService } from 'src/app/services/cookie-storage.service';
   styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
+  toolbarMenu: ToolbarModel[] = [
+    {
+      title: 'Asesorados',
+    },
+    {
+      title: 'Perfil',
+    },
+  ];
+  page: string;
   actionActive: string = 'clients';
   clients: Datum[];
   copyClients: Datum[];
@@ -21,12 +32,18 @@ export class AdminComponent implements OnInit {
   constructor(
     private cookieStorageService: CookieStorageService,
     private authService: AuthService,
-    private clientService: ClientsService
+    private clientService: ClientsService,
+    private _global: GlobalService
   ) {}
 
   ngOnInit(): void {
-    this.getUsers();
-    this.getTrainers();
+    this.listenToChanges();
+  }
+
+  listenToChanges() {
+    this._global
+      .getPageSelectedObservable()
+      .subscribe((res) => (this.page = res));
   }
 
   applyFilterPerTrainer(filter) {
@@ -100,13 +117,6 @@ export class AdminComponent implements OnInit {
       (client) => client.attributes.trainer === trainer
     );
     this.copyTrainerClients = this.trainerClients;
-  }
-
-  getUsers() {
-    this.clientService.getAllUsers().subscribe((res: ClientModel) => {
-      this.clients = res.data.data;
-      this.copyClients = this.clients;
-    });
   }
 
   isActive(date: Date): string {

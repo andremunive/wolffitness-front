@@ -62,7 +62,7 @@ export class AssessmentComponent implements OnInit {
       this._assessment.createMeasurement(formData, this.data.id).subscribe({
         next: () => {
           this.toast.success('Medidas registradas', 'Exito');
-          this.cancel;
+          this.cancel();
         },
         error: () => {
           this.toast.error('Error al guardar las medidas', 'Error');
@@ -116,7 +116,7 @@ export class AssessmentComponent implements OnInit {
         thighFold +
         calfFold;
 
-      const bfp = this.bftCalc(age, foldSum, gender);
+      const bfp = foldSum > 0 ? this.bftCalc(age, foldSum, gender) : '0';
       this.bodyMeasurementsForm
         .get('bodyFatPercentage')
         ?.setValue(bfp, { emitEvent: false });

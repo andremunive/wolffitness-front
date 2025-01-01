@@ -24,17 +24,7 @@ export class ClientsFilterComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['trainer']) {
-      this.getUsers(changes['trainer'].currentValue);
     }
-  }
-
-  getUsers(trainer: string) {
-    this.clientService.getAllUsers().subscribe((res: ClientModel) => {
-      this.clients = res.data.data.filter(
-        (client) => client.attributes.trainer === trainer
-      );
-      this.copyClients = this.clients;
-    });
   }
 
   applyFilter(filter) {

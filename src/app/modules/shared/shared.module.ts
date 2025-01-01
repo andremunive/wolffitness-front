@@ -16,6 +16,14 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatCardModule } from '@angular/material/card';
+import { ClientProfileComponent } from './components/client-profile/client-profile.component';
+import { EditClientComponent } from './components/edit-client/edit-client.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -24,10 +32,18 @@ import { MatCardModule } from '@angular/material/card';
     LoaderComponent,
     ToolbarComponent,
     CardComponent,
+    ClientProfileComponent,
+    EditClientComponent,
   ],
   imports: [
     CommonModule,
     NgxSpinnerModule,
+    MatInputModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatDatepickerModule,
+    MatDialogModule,
     MatToolbarModule,
     MatPaginatorModule,
     MatTableModule,

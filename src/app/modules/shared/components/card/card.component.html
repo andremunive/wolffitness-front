@@ -2,7 +2,7 @@
   <div class="cards" *ngFor="let client of clients">
     <mat-card class="example-card">
       <mat-card-header>
-        <mat-card-title>
+        <mat-card-title (click)="clientDetails(client)">
           <span
             class="status-circle"
             [ngClass]="{
@@ -29,10 +29,21 @@
         </p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>Editar</button>
-        <button mat-button (click)="openPayment(client)">Pago</button>
-        <button mat-button (click)="openAssessment(client)">Valoracion</button>
-        <button mat-button>Eliminar</button>
+        <button
+          mat-raised-button
+          style="color: green; margin-right: 6px"
+          (click)="openPayment(client)"
+        >
+          Pago
+        </button>
+        <button
+          style="margin-right: 6px"
+          mat-raised-button
+          (click)="openAssessment(client)"
+        >
+          Valoracion
+        </button>
+        <button mat-raised-button (click)="editClient(client)">Editar</button>
       </mat-card-actions>
     </mat-card>
   </div>

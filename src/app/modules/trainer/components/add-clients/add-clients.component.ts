@@ -12,7 +12,6 @@ import { GlobalService } from 'src/app/services/global.service';
   styleUrls: ['./add-clients.component.scss'],
 })
 export class AddClientsComponent {
-  @Output() register = new EventEmitter();
   registerForm: FormGroup;
 
   genders = [
@@ -62,62 +61,6 @@ export class AddClientsComponent {
       });
     }
   }
-
-  // ngOnInit(): void {
-  //   this.initForm();
-  // }
-
-  // initForm() {
-  //   this.registerUserForm = this.formBuilder.group({
-  //     name: ['', [Validators.required]],
-  //     birthDate: ['', [Validators.required]],
-  //     email: ['', [Validators.required]],
-  //     whatsapp: ['', [Validators.required]],
-  //     gender: ['', [Validators.required]],
-  //   });
-  // }
-
-  // registerUser() {
-  //   if (this.registerUserForm.valid) {
-  //     const user = {
-  //       data: {
-  //         name: this.registerUserForm.value['name'],
-  //         whatsapp: this.registerUserForm.value['whatsapp'],
-  //         birthDate: this.registerUserForm.value['birthDate'],
-  //         email: this.registerUserForm.value['email'],
-  //         gender: this.registerUserForm.value['gender'],
-  //         // trainer: this.getUserName,
-  //       },
-  //     };
-  //     this.register.emit(user);
-  //     this.initForm();
-  //   }
-  // }
-
-  // calculateNextMonth(inputDate: string | Date): Date {
-  //   // Forzar la hora local para evitar el ajuste
-  //   const date =
-  //     typeof inputDate === 'string'
-  //       ? new Date(`${inputDate}T00:00:00`)
-  //       : new Date(inputDate);
-
-  //   console.log('inputDate: ', inputDate);
-  //   console.log('date: ', date);
-
-  //   // Guardar el día original
-  //   const originalDay = date.getDate();
-
-  //   // Sumar un mes
-  //   const nextMonth = new Date(date);
-  //   nextMonth.setMonth(nextMonth.getMonth() + 1);
-
-  //   // Ajustar si el mes tiene menos días
-  //   if (nextMonth.getDate() < originalDay) {
-  //     nextMonth.setDate(0);
-  //   }
-
-  //   return nextMonth;
-  // }
 
   cancel() {
     this.dialogRef.close(); // Solo cierra el modal sin enviar datos

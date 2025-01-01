@@ -21,6 +21,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { PaymentComponent } from './components/payment/payment.component';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { ProfileComponent } from './components/profile/profile.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatExpansionModule } from '@angular/material/expansion';
 @NgModule({
   declarations: [
     TrainerComponent,
@@ -30,10 +33,12 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     ProgressComponent,
     AssessmentComponent,
     PaymentComponent,
+    ProfileComponent,
   ],
   imports: [
     CommonModule,
     TrainerRoutingModule,
+    MatExpansionModule,
     MatDatepickerModule,
     MatButtonModule,
     MatNativeDateModule,
@@ -43,6 +48,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
     SharedModule,
     ReactiveFormsModule,
     MatFormFieldModule,
+    MatTableModule,
     FormsModule,
     MatDialogModule,
     MatSlideToggleModule,

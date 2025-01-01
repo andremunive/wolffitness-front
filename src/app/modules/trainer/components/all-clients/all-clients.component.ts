@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import {
   ClientModel,
+  ClientModelSearch,
   Datum,
   Pagination,
 } from 'src/app/core/models/client.model';
@@ -17,6 +18,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddClientsComponent } from '../add-clients/add-clients.component';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { GlobalService } from 'src/app/services/global.service';
+import { FiltersModel } from 'src/app/core/models/filter.model';
+import { CookieStorageService } from 'src/app/services/cookie-storage.service';
 
 @Component({
   selector: 'app-all-clients',
@@ -38,7 +41,7 @@ export class AllClientsComponent implements OnInit {
   clients: Datum[] = [];
   pagination: Pagination;
   @Output() mainSearch = new EventEmitter();
-  filterForm: FormGroup;
+  filtersForm: FormGroup;
 
   isMobile: boolean = false;
 
@@ -47,13 +50,18 @@ export class AllClientsComponent implements OnInit {
   currentYear = this.currentDate.getFullYear();
   currentMonth = this.currentDate.getMonth();
   showFilters: boolean = false;
+  filters: FiltersModel;
+  trainer: string;
+
+  searchClient = '';
 
   constructor(
-    private fb: FormBuilder,
-    private clientService: ClientsService,
+    private _client: ClientsService,
     private dialog: MatDialog,
     private breakpointObserver: BreakpointObserver,
-    private _global: GlobalService
+    private _global: GlobalService,
+    private formBuilder: FormBuilder,
+    private _cookiesStorage: CookieStorageService
   ) {
     // this.filterForm = this.fb.group({
     //   activos: [false],
@@ -65,9 +73,17 @@ export class AllClientsComponent implements OnInit {
 
   toggleFilters() {
     this.showFilters = !this.showFilters;
+    if (!this.showFilters) {
+      this.filters = { trainer: this.trainer };
+      this.filtersForm.reset();
+      this.getUsers();
+    }
   }
 
   ngOnInit(): void {
+    this.trainer = this._cookiesStorage.getCookie('user.name');
+    this.filters = { trainer: this.trainer };
+    this.initForm();
     this.breakpointObserver
       .observe([Breakpoints.Handset])
       .subscribe((result) => {
@@ -80,13 +96,39 @@ export class AllClientsComponent implements OnInit {
     });
   }
 
+  applyFilters() {
+    this.filters = this.filtersForm.getRawValue();
+    this.getUsers();
+  }
+
+  initForm() {
+    this.filtersForm = this.formBuilder.group({
+      trainer: [''],
+      fortNight: [''],
+    });
+  }
+
+  onSearch() {
+    if (this.searchClient.length > 1) {
+      this._client
+        .getUserByName(this.searchClient)
+        .subscribe((clients: ClientModelSearch) => {
+          this.clients = clients.data;
+          this.pagination = clients.meta.pagination;
+        });
+    } else {
+      this.getUsers();
+    }
+  }
+
   getUsers(pagination?: any) {
     const pageSize = pagination ? pagination.pageSize + '' : '10';
     const page = pagination ? pagination.pageIndex + 1 + '' : '1';
-    this.clientService
-      .getUsersByTrainerLogged(pageSize, page)
-      .subscribe((res: ClientModel) => {
-        this.clients = res.data.data;
+    this.filters.trainer = this.trainer;
+    this._client
+      .getAllUsers(pageSize, page, this.filters)
+      .subscribe((res: ClientModelSearch) => {
+        this.clients = res.data;
         this.pagination = res.meta.pagination;
       });
   }

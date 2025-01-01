@@ -5,6 +5,8 @@
     class="form-control me-2"
     placeholder="Buscar"
     aria-label="Buscar"
+    (input)="onSearch()"
+    [(ngModel)]="searchClient"
   />
   <button
     class="btn btn-outline-secondary me-2"
@@ -20,30 +22,18 @@
 
 <!-- Contenedor de filtros -->
 <div class="filters" *ngIf="showFilters" [@filterAnimation]>
-  <div class="me-3">
-    <label for="mesSelect" class="form-label">Mes</label>
-    <select id="mesSelect" class="form-select">
-      <option value="enero">Enero</option>
-      <option value="febrero">Febrero</option>
-      <option value="marzo">Marzo</option>
-      <option value="abril">Abril</option>
-      <option value="mayo">Mayo</option>
-      <option value="junio">Junio</option>
-      <option value="julio">Julio</option>
-      <option value="agosto">Agosto</option>
-      <option value="septiembre">Septiembre</option>
-      <option value="octubre">Octubre</option>
-      <option value="noviembre">Noviembre</option>
-      <option value="diciembre">Diciembre</option>
-    </select>
-  </div>
-  <div class="">
-    <label for="quincenaSelect" class="form-label">Quincena</label>
-    <select id="quincenaSelect" class="form-select">
-      <option value="primera">Primera quincena</option>
-      <option value="segunda">Segunda quincena</option>
-    </select>
-  </div>
+  <form [formGroup]="filtersForm" (submit)="applyFilters()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Quincena</mat-label>
+      <mat-select formControlName="fortNight">
+        <mat-option value="1">Primera</mat-option>
+        <mat-option value="2">Segunda</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="primary" type="submit">Filtrar</button>
+    </mat-dialog-actions>
+  </form>
 </div>
 
 <app-table

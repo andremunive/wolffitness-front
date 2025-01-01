@@ -10,10 +10,12 @@ const usersMethod = {
 
 const paymentsMethod = {
   paymentRecords: 'payment-records',
+  lastThreePayments: 'last-three-payments',
 };
 
 const measurementMethod = {
   measurements: 'measurements',
+  lastThreeMeasurements: 'last-three-measurements',
 };
 
 export const host = {

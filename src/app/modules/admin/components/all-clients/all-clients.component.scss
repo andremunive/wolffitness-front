@@ -1,130 +1,64 @@
-.main-content {
-  width: calc(100vw - 250px);
-  padding: 10px 20px;
-  margin-left: 250px;
-  .content-header {
-    margin: 10px 0;
-    display: flex;
-    justify-content: center;
-  }
+.main-search {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
 
-  .filters-container {
-    form {
+.filters {
+  // border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 9px;
+  // background-color: #f8f9fa;
+  overflow: hidden;
+  display: flex;
+  margin-bottom: 16px;
+  form {
+    display: flex;
+    mat-form-field {
       display: flex;
-      flex-direction: column;
-      .main-search {
-        margin-bottom: 15px;
-        display: flex;
-        input {
-          margin-right: 12px;
-        }
-      }
-      .other-filters {
-        display: flex;
-        .form-group {
-          margin-right: 12px;
-          width: 300px;
-        }
-      }
+      align-items: center;
+      margin-right: 12px;
     }
-    button {
-      width: 200px;
-      font-weight: 700;
-      height: 50%;
-    }
-    margin-bottom: 15px;
   }
+}
 
-  .contabilidad-container {
-    margin: 12px 0;
-    width: 100%;
-    height: 100px;
-    .c-table {
-      height: 100%;
-      width: 400px;
-      border: 2px solid rgb(136, 136, 136);
-      .title {
-        display: flex;
-        align-items: center;
-        padding-left: 8px;
-        width: 60%;
-        border-right: 2px solid rgb(136, 136, 136);
-        font-size: 17px;
-        font-weight: 700;
-      }
-      .c-data {
-        display: flex;
-        align-items: center;
-        padding-left: 8px;
-      }
-      .c-clients {
-        width: 100%;
-        height: 50%;
-        border-bottom: 2px solid rgb(136, 136, 136);
-        display: flex;
-      }
-      .c-money {
-        width: 100%;
-        height: 50%;
-        display: flex;
-      }
-    }
-  }
-  .content-table {
-    .false {
-      color: red;
-    }
-    .true {
-      color: green;
-    }
-    .actions {
-      i {
-        margin: 0 6px;
-        cursor: pointer;
-      }
-    }
-  }
-  .form-container {
-    margin-top: 30px;
-    padding: 0 100px;
+.all-clients-container {
+  .clients-header {
     display: flex;
-    justify-content: center;
-    form {
-      width: 100%;
-      .one {
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: space-between;
-        .client-name {
-          width: 50%;
-        }
-        .plan {
-          width: 40%;
-        }
-        .info {
-          width: 30%;
-        }
-      }
-      .two {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 30px;
-        .form-group {
-          width: 30%;
-        }
-      }
-      textarea {
-        display: block;
-        margin-bottom: 30px;
-      }
-      .save-btn {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        button {
-          width: 30%;
+    flex-direction: column;
+    align-items: center;
+    .filter-container {
+      width: 90%;
+      border: 1px solid rgb(163, 163, 163);
+      border-radius: 10px;
+      padding: 6px;
+      form {
+        mat-slide-toggle {
+          margin: 8px;
         }
       }
     }
+  }
+  h1 {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  input {
+    width: 90%;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid gray;
+    padding: 8px;
+    margin-bottom: 16px;
+  }
+  .card-container {
+    .card-element {
+      display: flex;
+      justify-content: center;
+    }
+    margin-top: 16px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 22px;
+    justify-content: center;
   }
 }

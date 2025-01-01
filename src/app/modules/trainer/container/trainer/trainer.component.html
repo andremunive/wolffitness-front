@@ -5,10 +5,6 @@
     *ngSwitchCase="'Asesorados'"
     (mainSearch)="applyFilter($event)"
   ></app-all-clients>
-  <app-add-clients
-    *ngSwitchCase="'Agregar asesorado'"
-    (register)="registerUser($event)"
-  ></app-add-clients>
-  <app-progress *ngSwitchCase="'Progreso'" [clients]="clients"></app-progress>
-  <app-assessment *ngSwitchCase="'Valoracion'"></app-assessment>
+  <app-progress *ngSwitchCase="'Perfils'" [clients]="clients"></app-progress>
+  <app-profile *ngSwitchCase="'Perfil'"></app-profile>
 </div>

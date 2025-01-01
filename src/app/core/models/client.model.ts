@@ -3,6 +3,16 @@ export interface ClientModel {
   meta: Meta;
 }
 
+export interface ClientModelSearch {
+  data: Datum[];
+  meta: Meta;
+}
+
+export interface SingleCLient {
+  data: Datum;
+  meta: Meta;
+}
+
 export interface data {
   data: Datum[];
   meta: any;
@@ -26,6 +36,11 @@ export interface Attributes {
   gender: string;
   birthDate?: Date;
   status?: string;
+  discountReason?: string;
+  discountAmount?: number;
+  discount?: boolean;
+  visible?: boolean;
+  email?: string;
 }
 
 export interface Meta {

@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieStorageService } from './cookie-storage.service';
+import { BodyMeasurementResponse } from '../core/models/measurement.mode';
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +27,13 @@ export class AssessmentService {
       },
     };
     return this.http.post(this.apiUrl, payload, { headers });
+  }
+
+  getLastThreeMeasurements(clientId): Observable<BodyMeasurementResponse> {
+    const url = `${environment.URL_BASE}${environment.host.measurement.methods.lastThreeMeasurements}/${clientId}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
+    });
+    return this.http.get<BodyMeasurementResponse>(url, { headers });
   }
 }

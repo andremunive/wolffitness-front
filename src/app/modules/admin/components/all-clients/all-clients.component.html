@@ -1,109 +1,52 @@
-<app-loader *ngIf="!clients"></app-loader>
-
-<div class="main-content" *ngIf="clients">
-  <div class="content-header">
-    <h2>Clientes</h2>
-  </div>
-
-  <!-- Filters -->
-  <div class="filters-container">
-    <form [formGroup]="filterForm">
-      <div class="form-group main-search">
-        <input
-          placeholder="Nombre"
-          type="text"
-          class="form-control"
-          formControlName="name"
-        />
-        <button class="btn btn-primary" (click)="clearFilters()">
-          Borrar filtros
-        </button>
-      </div>
-      <div class="other-filters">
-        <div class="form-group">
-          <label for="">Estatus</label>
-          <select class="form-select" formControlName="status">
-            <option value="Activo">Activos</option>
-            <option value="Inactivo">Inactivos</option>
-            <option selected value="todos">Todos</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="">Entrenador</label>
-          <select class="form-select" formControlName="trainer">
-            <option selected value="Andres Munive">Andres Munive</option>
-            <option selected value="Ivan Romero">Ivan Romero</option>
-            <option value="Julio Munive">Julio Munive</option>
-            <option value="Ruby Manjarres">Ruby Manjarres</option>
-            <option selected value="todos">Todos</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="">Fecha</label>
-          <input type="date" class="form-control" formControlName="startDate" />
-          <input type="date" class="form-control" formControlName="endDate" />
-        </div>
-      </div>
-    </form>
-  </div>
-
-  <!-- Contabilidad -->
-  <div class="contabilidad-container">
-    <div class="c-table">
-      <div class="c-clients">
-        <div class="title">Clientes totales</div>
-        <div class="c-data">{{ clients.length }}</div>
-      </div>
-      <div class="c-money">
-        <div class="title">Suma de mensualidades</div>
-        <div class="c-data">{{ clientsMoney | currency }}</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- TABLE -->
-  <div class="content-table">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Nombre</th>
-          <th scope="col">Entrenador</th>
-          <th scope="col">WhatsApp</th>
-          <th scope="col">Fecha de inicio</th>
-          <th scope="col">Fecha final</th>
-          <th scope="col">Plan</th>
-          <th scope="col">Motivo descuento</th>
-          <th scope="col">Mensualidad</th>
-          <th scope="col">Estatus</th>
-          <th scope="col">Pago</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let client of clients">
-          <td>{{ client.attributes.name }}</td>
-          <td>{{ client.attributes.trainer }}</td>
-          <td>{{ client.attributes.whatsapp }}</td>
-          <td>{{ client.attributes.endDate | date : "dd/MM/yyyy" }}</td>
-          <td>{{ client.attributes.endDate | date : "dd/MM/yyyy" }}</td>
-          <td>{{ client.attributes.plan }}</td>
-          <td>
-            {{ "No aplica" }}
-          </td>
-          <td>{{ client.attributes.monthlyPayment | currency }}</td>
-          <td
-            class="false"
-            [ngClass]="{
-              true: isActive(client.attributes.endDate) == 'Activo'
-            }"
-          >
-            {{ isActive(client.attributes.endDate) }}
-          </td>
-          <td class="actions">
-            {{ client.attributes.hasPaid ? "Al dia" : "Pendiente" }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<h1 style="text-align: center">Clientes de Wolf Fitness</h1>
+<div class="d-flex align-items-center main-search">
+  <input
+    type="text"
+    class="form-control me-2"
+    placeholder="Buscar"
+    aria-label="Buscar"
+    (input)="onSearch()"
+    [(ngModel)]="searchClient"
+  />
+  <button
+    class="btn btn-outline-secondary me-2"
+    type="button"
+    (click)="toggleFilters()"
+  >
+    Filtros
+  </button>
 </div>
+
+<!-- Contenedor de filtros -->
+<div class="filters" *ngIf="showFilters" [@filterAnimation]>
+  <form [formGroup]="filtersForm" (submit)="applyFilters()">
+    <!-- Trainer -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Entrenador</mat-label>
+      <mat-select formControlName="trainer">
+        <mat-option value="Ruby Manjarres">Ruby Manjarres</mat-option>
+        <mat-option value="Ivan Romero">Ivan Romero</mat-option>
+        <mat-option value="Julio Munive">Julio Munive</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Quincena</mat-label>
+      <mat-select formControlName="fortNight">
+        <mat-option value="1">Primera</mat-option>
+        <mat-option value="2">Segunda</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+      <button mat-flat-button color="primary" type="submit">Filtrar</button>
+    </mat-dialog-actions>
+  </form>
+</div>
+
+<app-table
+  [clients]="clients"
+  [pagination]="pagination"
+  style="padding: 20px"
+  (paginationChange)="onPageChange($event)"
+  (updateVisibility)="updateVisibility($event)"
+  [isAdmin]="true"
+></app-table>

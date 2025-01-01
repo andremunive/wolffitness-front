@@ -34,13 +34,7 @@ export class TrainerComponent implements OnInit {
       title: 'Asesorados',
     },
     {
-      title: 'Agregar asesorado',
-    },
-    {
-      title: 'Progreso',
-    },
-    {
-      title: 'Valoracion',
+      title: 'Perfil',
     },
   ];
 
@@ -55,9 +49,6 @@ export class TrainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.listenToChanges();
-    // this.initForm();
-    // this.initFilterForm();
-    // this.toFilter();
   }
 
   listenToChanges() {

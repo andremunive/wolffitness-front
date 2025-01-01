@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import {
   Attributes,
   Datum,
   Pagination,
 } from 'src/app/core/models/client.model';
 import { AssessmentComponent } from 'src/app/modules/trainer/components/assessment/assessment.component';
-import { EditClientComponent } from 'src/app/modules/trainer/components/edit-client/edit-client.component';
 import { PaymentComponent } from 'src/app/modules/trainer/components/payment/payment.component';
+import { EditClientComponent } from '../edit-client/edit-client.component';
 
 @Component({
   selector: 'app-card',
@@ -19,7 +20,7 @@ export class CardComponent {
   @Input() pagination: Pagination;
   @Output() paginationChange = new EventEmitter<any>();
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, private router: Router) {}
 
   isActive(client: Datum) {
     let dateFormat = new Date(client.attributes.endDate);
@@ -47,30 +48,11 @@ export class CardComponent {
     const dialogRef = this.dialog.open(PaymentComponent, { data: client });
   }
 
-  // get isActive(): boolean {
-  //   let dateFormat = new Date(this.client.endDate);
-  //   dateFormat.setHours(0, 0, 0, 0);
-  //   dateFormat.setDate(dateFormat.getDate() + 1);
+  clientDetails(client: Datum) {
+    this.router.navigate([`trainer/client/${client.id}`]);
+  }
 
-  //   let currentDate = new Date();
-  //   currentDate.setHours(0, 0, 0, 0);
-
-  //   if (dateFormat >= currentDate) {
-  //     return true;
-  //   }
-  //   return false;
-  // }
-
-  // openDialog(): void {
-  //   this.dialog.open(EditClientComponent, {
-  //     data: {
-  //       startDate: this.client.endDate,
-  //       endDate: this.client.endDate,
-  //       hasPaid: this.client.hasPaid,
-  //       name: this.client.name,
-  //       plan: this.client.plan,
-  //       monthlyPayment: this.client.monthlyPayment,
-  //     },
-  //   });
-  // }
+  editClient(client: Datum) {
+    const dialogRef = this.dialog.open(EditClientComponent, { data: client });
+  }
 }

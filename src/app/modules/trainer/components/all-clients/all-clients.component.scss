@@ -54,3 +54,11 @@
     justify-content: center;
   }
 }
+form {
+  display: flex;
+  mat-form-field {
+    display: flex;
+    align-items: center;
+    margin-right: 12px;
+  }
+}

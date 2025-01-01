@@ -25,6 +25,12 @@ export class PaymentComponent implements OnInit {
   amountSubscription!: Subscription;
   discountSubscription!: Subscription;
   hasDiscount = false;
+  today = new Date(); // Fecha de hoy
+  dateFilter = (date: Date | null): boolean => {
+    const today = new Date(); // Asegurarte que está en contexto
+    today.setHours(0, 0, 0, 0); // Quitar las horas para comparar solo fechas
+    return date ? date >= today : false;
+  };
 
   constructor(
     private dialogRef: MatDialogRef<PaymentComponent>,
@@ -132,7 +138,14 @@ export class PaymentComponent implements OnInit {
     const date = new Date(dateString);
 
     // Sumar un mes usando setMonth
+    const currentDay = date.getDate(); // Guardamos el día actual
     date.setMonth(date.getMonth() + 1);
+
+    // Verificar si el día actual no existe en el mes ajustado
+    if (date.getDate() !== currentDay) {
+      // Ajustar al último día del mes anterior
+      date.setDate(0); // 0 en setDate() ajusta al último día del mes anterior
+    }
 
     // Formatear la fecha en 'YYYY-MM-DD'
     const year = date.getFullYear();
@@ -157,9 +170,12 @@ export class PaymentComponent implements OnInit {
                 plan: formData.plan,
                 monthlyPayment: formData.amount,
                 status: formData.status,
+                discount: formData.hasDiscounted,
+                discountAmount: formData.discountAmount,
+                discountReason: formData.discountReason,
               },
             };
-            return this._payment.updateClientPaymentData(payload, this.data.id);
+            return this._payment.updateClient(payload, this.data.id);
           })
         )
         .subscribe({
@@ -188,12 +204,11 @@ export class PaymentComponent implements OnInit {
         switchMap((records: any) => {
           if (records && records.data.length > 0) {
             const paymentRecordId = records.data[0].id;
-            console.log(paymentRecordId);
             return this._payment
               .updatePaymentRecord(paymentRecordId, status)
               .pipe(
                 switchMap(() =>
-                  this._payment.updateClientPaymentData(payload, this.data.id)
+                  this._payment.updateClient(payload, this.data.id)
                 )
               ); // Actualizar el registro de pago
           } else {

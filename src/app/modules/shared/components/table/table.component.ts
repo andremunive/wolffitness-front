@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import {
   ClientModel,
   Datum,
@@ -21,6 +22,7 @@ import {
 } from 'src/app/core/models/client.model';
 import { AssessmentComponent } from 'src/app/modules/trainer/components/assessment/assessment.component';
 import { PaymentComponent } from 'src/app/modules/trainer/components/payment/payment.component';
+import { EditClientComponent } from '../edit-client/edit-client.component';
 
 @Component({
   selector: 'app-table',
@@ -30,26 +32,49 @@ import { PaymentComponent } from 'src/app/modules/trainer/components/payment/pay
 export class TableComponent implements OnInit, OnChanges {
   @Input() clients: Datum[] = [];
   @Input() pagination: Pagination;
+  @Input() isAdmin = false;
   @Output() paginationChange = new EventEmitter<any>();
+  @Output() updateVisibility = new EventEmitter<Datum>();
   dataSource = new MatTableDataSource<Datum>([]);
 
-  displayedColumns: string[] = [
-    'name',
-    'status',
-    'whatsapp',
-    'plan',
-    'monthlyPayment',
-    'endDate',
-    'actions',
-  ];
+  displayedColumns: string[];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   ngOnInit(): void {
     this.dataSource.data = this.clients;
+
+    this.displayedColumns = this.isAdmin
+      ? [
+          'name',
+          'trainer',
+          'whatsapp',
+          'birthDate',
+          'createdAt',
+          'updatedAt',
+          'status',
+          'plan',
+          'monthlyPayment',
+          'discountValue',
+          'discountReason',
+          'endDate',
+          'visible',
+          'actions',
+        ]
+      : [
+          'name',
+          'status',
+          'whatsapp',
+          'plan',
+          'monthlyPayment',
+          'discountValue',
+          'discountReason',
+          'endDate',
+          'actions',
+        ];
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -84,13 +109,7 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   editClient(client: Datum) {
-    console.log('Editar cliente:', client);
-    // Lógica para editar el cliente
-  }
-
-  deleteClient(id: number) {
-    console.log('Eliminar cliente con ID:', id);
-    // Lógica para eliminar el cliente
+    const dialogRef = this.dialog.open(EditClientComponent, { data: client });
   }
 
   openPayment(client: Datum) {
@@ -99,5 +118,13 @@ export class TableComponent implements OnInit, OnChanges {
 
   openAssessment(client: Datum) {
     const dialogRef = this.dialog.open(AssessmentComponent, { data: client });
+  }
+
+  clientDetails(client: Datum) {
+    this.router.navigate([`trainer/client/${client.id}`]);
+  }
+
+  modifyVisibility(client: Datum) {
+    this.updateVisibility.emit(client);
   }
 }
