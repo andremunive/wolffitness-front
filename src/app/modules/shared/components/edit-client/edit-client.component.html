@@ -1,0 +1,78 @@
+<main>
+  <h2 mat-dialog-title>Registrar Usuario</h2>
+  <form [formGroup]="editUserForm" (ngSubmit)="submit()">
+    <mat-dialog-content>
+      <!-- Nombre Completo -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nombre</mat-label>
+        <input matInput formControlName="fullName" />
+        <mat-error *ngIf="editUserForm.get('fullName')?.hasError('required')">
+          El nombre es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="editUserForm.get('fullName')?.hasError('minlength')">
+          El nombre debe tener al menos 3 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Género -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Género</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option *ngFor="let gender of genders" [value]="gender.value">
+            {{ gender.viewValue }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="editUserForm.get('gender')?.hasError('required')">
+          El género es obligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Fecha de Nacimiento -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Nacimiento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="birthDate" />
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="editUserForm.get('birthDate')?.hasError('required')">
+          La fecha es obligatoria.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- Correo -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Correo</mat-label>
+        <input matInput type="email" formControlName="email" />
+        <mat-error *ngIf="editUserForm.get('email')?.hasError('required')">
+          El correo es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="editUserForm.get('email')?.hasError('email')">
+          El correo no es válido.
+        </mat-error>
+      </mat-form-field>
+
+      <!-- WhatsApp -->
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>WhatsApp</mat-label>
+        <input matInput type="text" formControlName="whatsapp" />
+        <mat-error *ngIf="editUserForm.get('whatsapp')?.hasError('required')">
+          El número de WhatsApp es obligatorio.
+        </mat-error>
+        <mat-error *ngIf="editUserForm.get('whatsapp')?.hasError('pattern')">
+          El número de WhatsApp debe ser de 10 dígitos.
+        </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        [disabled]="editUserForm.invalid"
+      >
+        Registrar
+      </button>
+    </mat-dialog-actions>
+  </form>
+</main>

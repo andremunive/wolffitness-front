@@ -1,0 +1,33 @@
+h1,
+h2 {
+  text-align: center;
+}
+.client-info-wrapper {
+  display: flex;
+  justify-content: center;
+  @media (max-width: 768px) {
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
+  }
+
+  .client-info-container {
+    margin: 12px;
+    width: 600px;
+    min-width: 350px;
+    height: auto;
+    @media (max-width: 768px) {
+      width: 90%;
+    }
+  }
+  .cards-container {
+    .card {
+      margin: 20px 0;
+    }
+  }
+}
+.medidas {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}

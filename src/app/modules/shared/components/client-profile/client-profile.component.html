@@ -1,0 +1,84 @@
+<p>
+  <mat-toolbar color="primary">
+    <span (click)="goBack()" style="cursor: pointer">Atras</span>
+  </mat-toolbar>
+</p>
+
+<div class="client-profile-container">
+  <h1>{{ client?.attributes.name }}</h1>
+  <div class="client-info-wrapper">
+    <div class="client-info-container">
+      <h2>Medidas corporales</h2>
+      <div class="cards-container">
+        <mat-card
+          class="measurements card"
+          *ngFor="let measurement of measurements"
+        >
+          <mat-card-header>
+            <mat-card-title>{{
+              measurement.attributes.date | date : "longDate"
+            }}</mat-card-title>
+            <mat-card-subtitle
+              >{{ measurement.attributes.weight }}kg</mat-card-subtitle
+            >
+          </mat-card-header>
+          <mat-card-content>
+            <div class="medidas">
+              <p>Pecho: {{ measurement.attributes.chest }}</p>
+              <p>Abdomen: {{ measurement.attributes.abdomen }}</p>
+              <p>Gluteos: {{ measurement.attributes.glutes }}</p>
+            </div>
+            <div class="medidas">
+              <p>Brazo dr: {{ measurement.attributes.rightArm }}</p>
+              <p>Brazo izq: {{ measurement.attributes.leftArm }}</p>
+              <p>Pierna dr: {{ measurement.attributes.rightThigh }}</p>
+            </div>
+            <div class="medidas">
+              <p>Pierna izq: {{ measurement.attributes.leftThigh }}</p>
+              <p>Pantorrilla dr: {{ measurement.attributes.rightCalf }}</p>
+              <p>Pantorrilla izq: {{ measurement.attributes.leftCalf }}</p>
+            </div>
+            <div style="display: flex; justify-content: center">
+              <p>
+                Porcentaje de grasa:
+                {{ measurement.attributes.bodyFatPercentage }}
+              </p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div class="client-info-container">
+      <h2>Registro de pagos</h2>
+      <div class="cards-container">
+        <mat-card class="payment card" *ngFor="let payment of payments">
+          <mat-card-header>
+            <mat-card-title>{{
+              payment.attributes.paymentDate | date : "longDate"
+            }}</mat-card-title>
+            <mat-card-subtitle>{{
+              payment.attributes.status == "paid" ? "Pagada" : "Pendiente"
+            }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>Plan: {{ payment.attributes.plan }}</p>
+            <p>Valor: {{ payment.attributes.amount | currency }}</p>
+            <p>
+              Tuvo descuento:
+              {{ payment.attributes.hasDiscounted ? "Si" : "No" }}
+            </p>
+            <div *ngIf="payment.attributes.hasDiscounted">
+              <p>
+                Valor del descuento:
+                {{ payment.attributes.discountAmount | currency }}
+              </p>
+              <p>
+                Razon del descuento: {{ payment.attributes.discountReason }}
+              </p>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
