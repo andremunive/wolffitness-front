@@ -158,6 +158,10 @@ export class PaymentComponent implements OnInit {
   submit() {
     if (this.paymentRecordForm.valid) {
       let formData = this.paymentRecordForm.getRawValue();
+      formData.amount = +formData.amount;
+      formData.discountAmount = formData.discountAmount
+        ? +formData.discountAmount
+        : 0;
       formData.dueDate = this.calcDueDate(formData.paymentDate);
       formData.hasDiscounted = this.hasDiscount;
       this._payment
