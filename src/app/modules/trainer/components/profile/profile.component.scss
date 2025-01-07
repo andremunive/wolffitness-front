@@ -34,3 +34,16 @@
     }
   }
 }
+
+.chart-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px; /* Espaciado entre los elementos */
+  padding: 16px; /* Espaciado interno del contenedor */
+}
+
+@media (max-width: 750px) {
+  .chart-container {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+}

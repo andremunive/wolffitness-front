@@ -34,6 +34,7 @@ export interface PaymentPeriodSummary {
   totalCollected: number; // Total de dinero recolectado en el periodo
   totalGenerated: number;
   planCounts: PlanCounts; // Totales de clientes por plan
+  bonus: number;
 }
 
 export interface PlanCounts {

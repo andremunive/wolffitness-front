@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import {
   MonthlyPaymentSummary,
@@ -7,6 +7,23 @@ import {
 } from 'src/app/core/models/payment-summary.model';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
 import { PaymentService } from 'src/app/services/payment.service';
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart,
+  ChartComponent,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+} from 'ng-apexcharts';
+
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+  dataLabels: ApexDataLabels;
+  title: ApexTitleSubtitle;
+};
 
 @Component({
   selector: 'app-profile',
@@ -18,14 +35,15 @@ export class ProfileComponent implements OnInit {
   dataSource = new MatTableDataSource<PaymentSummaryData>([]);
   currentMonth: MonthlyPaymentSummary;
 
+  public chartOptionsArray: Partial<ChartOptions>[] = [];
+  data: PaymentSummaryResponse;
+  panelOpenState = false;
+
   displayedColumns: string[] = [
     'date',
     'fortNight',
-    'threeDaysActives',
-    'threeDaysPending',
-    'sixDaysActives',
-    'sixDaysPending',
-    'total',
+    'reported',
+    'bonus',
     'myFortNight',
   ];
 
@@ -46,7 +64,105 @@ export class ProfileComponent implements OnInit {
         const tableData = this.transformPaymentSummaryToTableData(response);
         this.dataSource.data = tableData;
         this.currentMonth = Object.values(response.data.attributes)[0];
+        this.data = response;
+        this.buildCharts();
       });
+  }
+
+  buildCharts() {
+    const attributes = this.data.data.attributes;
+    for (const month in attributes) {
+      if (attributes.hasOwnProperty(month)) {
+        // Primera quincena
+        const monthData = attributes[month];
+        const firstHalf = monthData.firstHalf;
+        this.chartOptionsArray.push({
+          series: [
+            firstHalf.planCounts.actives['3 dias'],
+            firstHalf.planCounts.pending['3 dias'],
+            firstHalf.planCounts.actives['6 dias'],
+            firstHalf.planCounts.pending['6 dias'],
+          ],
+          chart: {
+            width: 500,
+            type: 'pie',
+          },
+          labels: [
+            `Clientes activos 3 días`,
+            `Clientes pendientes 3 días`,
+            `Clientes activos 6 días`,
+            `Clientes pendientes 6 días`,
+          ],
+          title: {
+            text: `Primera quincena de ${month}`,
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function (val, opts) {
+              // Retorna el valor original de la serie en lugar del porcentaje
+              return opts.w.globals.series[opts.seriesIndex];
+            },
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 310,
+                },
+                legend: {
+                  position: 'bottom',
+                },
+              },
+            },
+          ],
+        });
+
+        // Segunda quincena
+        const secondHalf = monthData.secondHalf;
+        this.chartOptionsArray.push({
+          series: [
+            secondHalf.planCounts.actives['3 dias'],
+            secondHalf.planCounts.pending['3 dias'],
+            secondHalf.planCounts.actives['6 dias'],
+            secondHalf.planCounts.pending['6 dias'],
+          ],
+          chart: {
+            width: 500,
+            type: 'pie',
+          },
+          labels: [
+            `Clientes activos 3 días`,
+            `Clientes pendientes 3 días`,
+            `Clientes activos 6 días`,
+            `Clientes pendientes 6 días`,
+          ],
+          title: {
+            text: `Segunda quincena de ${month}`,
+          },
+          dataLabels: {
+            enabled: true,
+            formatter: function (val, opts) {
+              // Retorna el valor original de la serie en lugar del porcentaje
+              return opts.w.globals.series[opts.seriesIndex];
+            },
+          },
+          responsive: [
+            {
+              breakpoint: 480,
+              options: {
+                chart: {
+                  width: 310,
+                },
+                legend: {
+                  position: 'bottom',
+                },
+              },
+            },
+          ],
+        });
+      }
+    }
   }
 
   transformPaymentSummaryToTableData(response: PaymentSummaryResponse) {
@@ -66,6 +182,7 @@ export class ProfileComponent implements OnInit {
           sixDaysPending: `${summary.firstHalf.planCounts.pending['6 dias']}`,
           totalCollected: summary.firstHalf.totalCollected,
           totalGenerated: summary.firstHalf.totalGenerated,
+          bonus: summary.firstHalf.bonus,
         });
         tableData.push({
           date: `${month}`,
@@ -76,6 +193,7 @@ export class ProfileComponent implements OnInit {
           sixDaysPending: `${summary.secondHalf.planCounts.pending['6 dias']}`,
           totalCollected: summary.secondHalf.totalCollected,
           totalGenerated: summary.secondHalf.totalGenerated,
+          bonus: summary.secondHalf.bonus,
         });
       }
     }

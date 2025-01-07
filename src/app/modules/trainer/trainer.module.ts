@@ -24,6 +24,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ProfileComponent } from './components/profile/profile.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { NgApexchartsModule } from 'ng-apexcharts';
 @NgModule({
   declarations: [
     TrainerComponent,
@@ -39,6 +40,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
     CommonModule,
     TrainerRoutingModule,
     MatExpansionModule,
+    NgApexchartsModule,
     MatDatepickerModule,
     MatButtonModule,
     MatNativeDateModule,
