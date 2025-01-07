@@ -9,13 +9,18 @@ const usersMethod = {
 };
 
 const paymentsMethod = {
-  paymentRecords: 'payment-records',
+  paymentRecords: 'payment-records/',
   lastThreePayments: 'last-three-payments',
 };
 
 const measurementMethod = {
   measurements: 'measurements',
   lastThreeMeasurements: 'last-three-measurements',
+};
+
+const trainerSummary = {
+  clientsCounts: 'summary-count/',
+  clientsAccounts: 'summary-accounts/',
 };
 
 export const host = {
@@ -30,5 +35,8 @@ export const host = {
   },
   payment: {
     methods: paymentsMethod,
+  },
+  trainer: {
+    methods: trainerSummary,
   },
 };

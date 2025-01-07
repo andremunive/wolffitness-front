@@ -82,14 +82,14 @@ export class PaymentService {
     trainerName: string,
     months: number
   ): Observable<PaymentSummaryResponse> {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}/summary/${trainerName}/${months}`;
+    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}summary/${trainerName}/${months}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
     return this.http.get<PaymentSummaryResponse>(url, { headers });
   }
   getAllPaymentSummary(months: number): Observable<AllPaymentSummaryResponse> {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}/all-summary/${months}`;
+    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}all-summary/${months}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });

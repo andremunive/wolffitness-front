@@ -1,20 +1,21 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import {
-  MonthlyPaymentSummary,
-  PaymentSummaryData,
-  PaymentSummaryResponse,
-} from 'src/app/core/models/payment-summary.model';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
 import { PaymentService } from 'src/app/services/payment.service';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
   ApexChart,
-  ChartComponent,
   ApexDataLabels,
   ApexTitleSubtitle,
 } from 'ng-apexcharts';
+import { TrainerSummaryService } from 'src/app/services/trainer-summary.service';
+import {
+  ClientCountsResponse,
+  MonthlyClientSummary,
+} from 'src/app/core/models/clients-count';
+import { switchMap, tap } from 'rxjs';
+import { PaymentSummaryResponse } from 'src/app/core/models/payment-summary';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -32,45 +33,37 @@ export type ChartOptions = {
 })
 export class ProfileComponent implements OnInit {
   trainerName = '';
-  dataSource = new MatTableDataSource<PaymentSummaryData>([]);
-  currentMonth: MonthlyPaymentSummary;
+  dataSource = new MatTableDataSource<any>([]);
+  currentMonth: MonthlyClientSummary;
 
   public chartOptionsArray: Partial<ChartOptions>[] = [];
   data: PaymentSummaryResponse;
+  chartsToBuild: ClientCountsResponse;
   panelOpenState = false;
 
   displayedColumns: string[] = [
     'date',
     'fortNight',
     'reported',
+    'pendingReported',
     'bonus',
     'myFortNight',
   ];
 
   constructor(
     private _cookies: CookieStorageService,
-    private _payment: PaymentService
+    private _payment: PaymentService,
+    private _trainerSummary: TrainerSummaryService
   ) {}
 
   ngOnInit(): void {
     this.trainerName = this._cookies.getCookie('user.name');
-    this.getPaymentSummary();
-  }
-
-  getPaymentSummary() {
-    this._payment
-      .getPaymentSummaryByTrainer(this.trainerName, 4)
-      .subscribe((response: PaymentSummaryResponse) => {
-        const tableData = this.transformPaymentSummaryToTableData(response);
-        this.dataSource.data = tableData;
-        this.currentMonth = Object.values(response.data.attributes)[0];
-        this.data = response;
-        this.buildCharts();
-      });
+    this.getTrainerSummary();
+    // this.getPaymentSummary();
   }
 
   buildCharts() {
-    const attributes = this.data.data.attributes;
+    const attributes = this.chartsToBuild.data.attributes;
     for (const month in attributes) {
       if (attributes.hasOwnProperty(month)) {
         // Primera quincena
@@ -78,10 +71,10 @@ export class ProfileComponent implements OnInit {
         const firstHalf = monthData.firstHalf;
         this.chartOptionsArray.push({
           series: [
-            firstHalf.planCounts.actives['3 dias'],
-            firstHalf.planCounts.pending['3 dias'],
-            firstHalf.planCounts.actives['6 dias'],
-            firstHalf.planCounts.pending['6 dias'],
+            firstHalf.actives['3 dias'],
+            firstHalf.pending['3 dias'],
+            firstHalf.actives['6 dias'],
+            firstHalf.pending['6 dias'],
           ],
           chart: {
             width: 500,
@@ -122,10 +115,10 @@ export class ProfileComponent implements OnInit {
         const secondHalf = monthData.secondHalf;
         this.chartOptionsArray.push({
           series: [
-            secondHalf.planCounts.actives['3 dias'],
-            secondHalf.planCounts.pending['3 dias'],
-            secondHalf.planCounts.actives['6 dias'],
-            secondHalf.planCounts.pending['6 dias'],
+            secondHalf.actives['3 dias'],
+            secondHalf.pending['3 dias'],
+            secondHalf.actives['6 dias'],
+            secondHalf.pending['6 dias'],
           ],
           chart: {
             width: 500,
@@ -176,28 +169,40 @@ export class ProfileComponent implements OnInit {
         tableData.push({
           date: `${month}`,
           fortNight: `Primera quincena`,
-          threeDaysActives: `${summary.firstHalf.planCounts.actives['3 dias']}`,
-          threeDaysPending: `${summary.firstHalf.planCounts.pending['3 dias']}`,
-          sixDaysActives: `${summary.firstHalf.planCounts.actives['6 dias']}`,
-          sixDaysPending: `${summary.firstHalf.planCounts.pending['6 dias']}`,
           totalCollected: summary.firstHalf.totalCollected,
           totalGenerated: summary.firstHalf.totalGenerated,
+          pendingGenerated: summary.firstHalf.pendingGenerated,
           bonus: summary.firstHalf.bonus,
         });
         tableData.push({
           date: `${month}`,
           fortNight: `Segunda quincena`,
-          threeDaysActives: `${summary.secondHalf.planCounts.actives['3 dias']}`,
-          threeDaysPending: `${summary.secondHalf.planCounts.pending['3 dias']}`,
-          sixDaysActives: `${summary.secondHalf.planCounts.actives['6 dias']}`,
-          sixDaysPending: `${summary.secondHalf.planCounts.pending['6 dias']}`,
           totalCollected: summary.secondHalf.totalCollected,
           totalGenerated: summary.secondHalf.totalGenerated,
+          pendingGenerated: summary.secondHalf.pendingGenerated,
           bonus: summary.secondHalf.bonus,
         });
       }
     }
 
     return tableData;
+  }
+
+  getTrainerSummary() {
+    this._trainerSummary
+      .getClientCountsByTrainer(2)
+      .pipe(
+        tap((clientCounts: ClientCountsResponse) => {
+          this.chartsToBuild = clientCounts;
+          this.buildCharts();
+          this.currentMonth = Object.values(clientCounts.data.attributes)[0];
+        }),
+        switchMap(() => this._trainerSummary.getClientAccountsByTrainer(2))
+      )
+      .subscribe((clientAccounts: PaymentSummaryResponse) => {
+        const tableData =
+          this.transformPaymentSummaryToTableData(clientAccounts);
+        this.dataSource.data = tableData;
+      });
   }
 }

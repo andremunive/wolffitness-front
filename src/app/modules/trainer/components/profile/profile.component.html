@@ -6,15 +6,15 @@
     <div
       class="progress"
       [style.width.%]="
-        ((currentMonth?.firstHalf.planCounts.actives['6 dias'] +
-          currentMonth?.secondHalf.planCounts.actives['6 dias']) /
+        ((currentMonth?.firstHalf.actives['6 dias'] +
+          currentMonth?.secondHalf.actives['6 dias']) /
           7) *
         100
       "
     >
       <span class="progress-text">{{
-        currentMonth?.firstHalf.planCounts.actives["6 dias"] +
-          currentMonth?.secondHalf.planCounts.actives["6 dias"]
+        currentMonth?.firstHalf.actives["6 dias"] +
+          currentMonth?.secondHalf.actives["6 dias"]
       }}</span>
     </div>
   </div>
@@ -53,6 +53,10 @@
       <mat-panel-title>Cuentas</mat-panel-title>
     </mat-expansion-panel-header>
     <div class="mat-elevation-z8" style="overflow-x: auto">
+      <!-- <button mat-raised-button color="primary" (click)="exportToExcel()">
+        Descargar Excel
+      </button> -->
+
       <!-- table -->
       <div class="mat-elevation-z8" style="overflow-x: auto">
         <table mat-table [dataSource]="dataSource" matSort class="mat-table">
@@ -79,6 +83,16 @@
             <td mat-cell *matCellDef="let summary">
               <span class="status-circle"></span>
               {{ summary.totalGenerated | currency }}
+            </td>
+          </ng-container>
+          <!-- Columna de total -->
+          <ng-container matColumnDef="pendingReported">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              Pendiente por reportar
+            </th>
+            <td mat-cell *matCellDef="let summary">
+              <span class="status-circle"></span>
+              {{ summary.pendingGenerated | currency }}
             </td>
           </ng-container>
           <!-- Columna de total -->
