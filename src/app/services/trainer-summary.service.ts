@@ -11,6 +11,8 @@ import {
 import { FiltersModel } from '../core/models/filter.model';
 import { ClientCountsResponse } from '../core/models/clients-count';
 import { PaymentSummaryResponse } from '../core/models/payment-summary';
+import { AllTrainersClientSummaryResponse } from '../core/models/all-clients-count';
+import { AllTrainersClientAccountsResponse } from '../core/models/all-payment-summary';
 
 @Injectable({
   providedIn: 'root',
@@ -39,5 +41,24 @@ export class TrainerSummaryService {
       Authorization: `Bearer ${this._cookies.getJWT()}`,
     });
     return this.http.get<PaymentSummaryResponse>(URL, { headers });
+  }
+  getClientAccounts(
+    months: number
+  ): Observable<AllTrainersClientAccountsResponse> {
+    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.allClientsAccounts}${months}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this._cookies.getJWT()}`,
+    });
+    return this.http.get<AllTrainersClientAccountsResponse>(URL, { headers });
+  }
+
+  getClientCounts(
+    months: number
+  ): Observable<AllTrainersClientSummaryResponse> {
+    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.allClientsCounts}${months}`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this._cookies.getJWT()}`,
+    });
+    return this.http.get<AllTrainersClientSummaryResponse>(URL, { headers });
   }
 }

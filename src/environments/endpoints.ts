@@ -20,7 +20,9 @@ const measurementMethod = {
 
 const trainerSummary = {
   clientsCounts: 'summary-count/',
+  allClientsCounts: 'all-summary-count/',
   clientsAccounts: 'summary-accounts/',
+  allClientsAccounts: 'all-summary-accounts/',
 };
 
 export const host = {

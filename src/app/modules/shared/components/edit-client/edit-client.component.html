@@ -1,5 +1,5 @@
 <main>
-  <h2 mat-dialog-title>Registrar Usuario</h2>
+  <h2 mat-dialog-title>Editar Usuario</h2>
   <form [formGroup]="editUserForm" (ngSubmit)="submit()">
     <mat-dialog-content>
       <!-- Nombre Completo -->
@@ -64,7 +64,9 @@
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
-      <button mat-button color="warn" (click)="cancel()">Cancelar</button>
+      <button mat-button color="warn" type="button" (click)="cancel()">
+        Cancelar
+      </button>
       <button
         mat-flat-button
         color="primary"
