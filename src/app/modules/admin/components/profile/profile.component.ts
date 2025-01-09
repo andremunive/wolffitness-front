@@ -86,9 +86,7 @@ export class ProfileComponent implements OnInit {
             grossIncomeReported: `${summary.firstHalf.totalGenerated}`,
             pendingToReport: `${summary.firstHalf.pendingGenerated}`,
             bonus: `${summary.firstHalf.bonus}`,
-            toPay: `${
-              summary.firstHalf.totalCollected + summary.firstHalf.bonus
-            }`,
+            toPay: `${summary.firstHalf.totalCollected}`,
           });
           tableData.push({
             date: `${month}`,
