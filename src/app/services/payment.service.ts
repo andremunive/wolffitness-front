@@ -58,7 +58,7 @@ export class PaymentService {
   }
 
   updatePaymentRecord(paymentRecordId: number, status: string) {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}/${paymentRecordId}`;
+    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${paymentRecordId}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
