@@ -13,6 +13,7 @@ import { ClientCountsResponse } from '../core/models/clients-count';
 import { PaymentSummaryResponse } from '../core/models/payment-summary';
 import { AllTrainersClientSummaryResponse } from '../core/models/all-clients-count';
 import { AllTrainersClientAccountsResponse } from '../core/models/all-payment-summary';
+import { ClientsSummary } from '../core/models/clients-summary';
 
 @Injectable({
   providedIn: 'root',
@@ -26,39 +27,12 @@ export class TrainerSummaryService {
     this.trainer = this._cookies.getCookie('user.name');
   }
 
-  getClientCountsByTrainer(months: number): Observable<ClientCountsResponse> {
-    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.clientsCounts}${this.trainer}/${months}`;
+  getClientsSummary(months: number): Observable<ClientsSummary> {
+    const TRAINERID = this._cookies.getCookie('user.id');
+    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.clientsSummary}${TRAINERID}/${months}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this._cookies.getJWT()}`,
     });
-    return this.http.get<ClientCountsResponse>(URL, { headers });
-  }
-  getClientAccountsByTrainer(
-    months: number
-  ): Observable<PaymentSummaryResponse> {
-    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.clientsAccounts}${this.trainer}/${months}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this._cookies.getJWT()}`,
-    });
-    return this.http.get<PaymentSummaryResponse>(URL, { headers });
-  }
-  getClientAccounts(
-    months: number
-  ): Observable<AllTrainersClientAccountsResponse> {
-    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.allClientsAccounts}${months}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this._cookies.getJWT()}`,
-    });
-    return this.http.get<AllTrainersClientAccountsResponse>(URL, { headers });
-  }
-
-  getClientCounts(
-    months: number
-  ): Observable<AllTrainersClientSummaryResponse> {
-    const URL = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${environment.host.trainer.methods.allClientsCounts}${months}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this._cookies.getJWT()}`,
-    });
-    return this.http.get<AllTrainersClientSummaryResponse>(URL, { headers });
+    return this.http.get<ClientsSummary>(URL, { headers });
   }
 }

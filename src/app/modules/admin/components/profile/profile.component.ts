@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { switchMap, tap } from 'rxjs';
-import {
-  AllTrainersClientSummaryResponse,
-  TrainerClientSummary,
-} from 'src/app/core/models/all-clients-count';
+import { AllTrainersClientSummaryResponse } from 'src/app/core/models/all-clients-count';
 import { AllTrainersClientAccountsResponse } from 'src/app/core/models/all-payment-summary';
+import {
+  ClientGeneralSummary,
+  TrainerData,
+} from 'src/app/core/models/clients-general-summary';
 import {
   AllPaymentSummaryResponse,
   MonthlyPaymentSummary,
-  PaymentSummaryAttributes,
   PaymentSummaryData,
-  TrainerErrorSummary,
 } from 'src/app/core/models/payment-summary.model';
-import { PaymentService } from 'src/app/services/payment.service';
-import { TrainerSummaryService } from 'src/app/services/trainer-summary.service';
-import * as XLSX from 'xlsx';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-profile',
@@ -30,140 +26,93 @@ export class ProfileComponent implements OnInit {
   paymentSummary: AllPaymentSummaryResponse;
   clientCounts: AllTrainersClientSummaryResponse;
   clientAccounts: AllTrainersClientAccountsResponse;
+  clientGeneralSummary: ClientGeneralSummary;
 
-  clientsCountColumns: string[] = [
-    'date',
-    'fortNight',
-    'threeDaysActives',
-    'threeDaysPending',
-    'sixDaysActives',
-    'sixDaysPending',
+  clientGeneralSummaryColumns: string[] = [
+    'fecha',
+    'quincena',
+    'clientesActivos6Dias',
+    'clientesPendientes6Dias',
+    'clientesActivos3Dias',
+    'clientesPendientes3Dias',
+    'ingresosDeEstaQuincena',
+    'ingresosQuincenaPasada',
+    'ingresosPendientes',
+    'ingresoBruto',
+    'bonoDelMes',
+    'pagoDelEntrenador',
+    'ingresoNeto',
   ];
-  clientsAccountsColumns: string[] = [
-    'date',
-    'fortNight',
-    'grossIncomeReported',
-    'pendingToReport',
-    'bonus',
-    'toPay',
+  incomeSummaryColumns: string[] = [
+    'fecha',
+    'quincena',
+    'ingresosPendientes',
+    'ingresoBruto',
+    'bonoDelMes',
+    'pagoDelEntrenador',
+    'ingresoNeto',
   ];
 
-  constructor(private _trainerSummary: TrainerSummaryService) {}
+  constructor(private _admin: AdminService) {}
 
   ngOnInit(): void {
-    this.getAllSummary();
+    this.getClientGeneralSummary();
   }
 
-  getAllSummary() {
-    const months = 2;
-    this._trainerSummary
-      .getClientCounts(months)
-      .pipe(
-        tap((clientsCount: AllTrainersClientSummaryResponse) => {
-          this.trainers = Object.keys(clientsCount?.data.attributes);
-          this.clientCounts = clientsCount;
-        }),
-        switchMap(() => this._trainerSummary.getClientAccounts(months))
-      )
-      .subscribe((clientsAccounts: AllTrainersClientAccountsResponse) => {
-        this.clientAccounts = clientsAccounts;
+  getClientGeneralSummary() {
+    this._admin
+      .getCLientGeneralSummary(2)
+      .subscribe((summary: ClientGeneralSummary) => {
+        this.clientGeneralSummary = summary;
+        this.trainers = Object.keys(summary?.data.attributes);
       });
   }
 
-  transformClientAccountsToTableData(trainer: string) {
+  transformSummaryToTableData(trainer: string) {
     const tableData: any[] = [];
-    const attributes: PaymentSummaryAttributes | TrainerErrorSummary =
-      this.clientAccounts?.data.attributes[trainer];
-    if (attributes?.message) {
-      return tableData;
-    } else {
-      for (const month in attributes) {
-        if (attributes.hasOwnProperty(month)) {
-          const summary = attributes[month];
-          tableData.push({
-            date: `${month}`,
-            fortNight: 'Primera',
-            grossIncomeReported: `${summary.firstHalf.totalGenerated}`,
-            pendingToReport: `${summary.firstHalf.pendingGenerated}`,
-            bonus: `${summary.firstHalf.bonus}`,
-            toPay: `${summary.firstHalf.totalCollected}`,
-          });
-          tableData.push({
-            date: `${month}`,
-            fortNight: 'Segunda',
-            grossIncomeReported: `${summary.secondHalf.totalGenerated}`,
-            pendingToReport: `${summary.secondHalf.pendingGenerated}`,
-            bonus: `${summary.secondHalf.bonus}`,
-            toPay: `${
-              summary.secondHalf.totalCollected + summary.secondHalf.bonus
-            }`,
-          });
-        }
-      }
-
-      return tableData;
+    const attributes: TrainerData =
+      this.clientGeneralSummary.data.attributes[trainer];
+    for (const month in attributes) {
+      const summary = attributes[month];
+      tableData.push({
+        fecha: `${month}`,
+        quincena: 'Primera',
+        clientesActivos6Dias: `${summary.firstHalf.sixDaysPlanTotalPayments}`,
+        clientesPendientes6Dias: `${summary.firstHalf.sixDaysPlanTotalPending}`,
+        clientesActivos3Dias: `${summary.firstHalf.threeDaysPlanTotalPayments}`,
+        clientesPendientes3Dias: `${summary.firstHalf.threeDaysPlanTotalPending}`,
+        ingresosDeEstaQuincena: `${summary.firstHalf.fortNightIncome}`,
+        ingresosQuincenaPasada: `${summary.firstHalf.incomeFromLastFortNight}`,
+        ingresosPendientes: `${summary.firstHalf.pendinIncome}`,
+        ingresoBruto: `${summary.firstHalf.grossIncome}`,
+        bonoDelMes: `${summary.firstHalf.monthBonus}`,
+        pagoDelEntrenador: `${summary.firstHalf.trainerIncome}`,
+        ingresoNeto: `${
+          summary.firstHalf.grossIncome - summary.firstHalf.trainerIncome
+        }`,
+      });
+      tableData.push({
+        fecha: `${month}`,
+        quincena: 'Segunda',
+        clientesActivos6Dias: `${summary.secondHalf.sixDaysPlanTotalPayments}`,
+        clientesPendientes6Dias: `${summary.secondHalf.sixDaysPlanTotalPending}`,
+        clientesActivos3Dias: `${summary.secondHalf.threeDaysPlanTotalPayments}`,
+        clientesPendientes3Dias: `${summary.secondHalf.threeDaysPlanTotalPending}`,
+        ingresosDeEstaQuincena: `${summary.secondHalf.fortNightIncome}`,
+        ingresosQuincenaPasada: `${summary.secondHalf.incomeFromLastFortNight}`,
+        ingresosPendientes: `${summary.secondHalf.pendinIncome}`,
+        ingresoBruto: `${summary.secondHalf.grossIncome}`,
+        bonoDelMes: `${summary.secondHalf.monthBonus}`,
+        pagoDelEntrenador: `${
+          summary.secondHalf.trainerIncome + summary.secondHalf.monthBonus
+        }`,
+        ingresoNeto: `${
+          summary.secondHalf.grossIncome -
+          summary.secondHalf.trainerIncome -
+          summary.secondHalf.monthBonus
+        }`,
+      });
     }
-  }
-  transformClientCountsToTableData(trainer: string) {
-    const tableData: any[] = [];
-    const attributes: TrainerClientSummary | TrainerErrorSummary =
-      this.clientCounts?.data.attributes[trainer];
-    if (attributes?.message) {
-      return tableData;
-    } else {
-      for (const month in attributes) {
-        if (attributes.hasOwnProperty(month)) {
-          const summary = attributes[month];
-          tableData.push({
-            date: `${month}`,
-            fortNight: 'Primera',
-            threeDaysActives: `${summary.firstHalf.actives['3 dias']}`,
-            threeDaysPending: `${summary.firstHalf.pending['3 dias']}`,
-            sixDaysActives: `${summary.firstHalf.actives['6 dias']}`,
-            sixDaysPending: `${summary.firstHalf.pending['6 dias']}`,
-          });
-          tableData.push({
-            date: `${month}`,
-            fortNight: 'Segunda',
-            threeDaysActives: `${summary.secondHalf.actives['3 dias']}`,
-            threeDaysPending: `${summary.secondHalf.pending['3 dias']}`,
-            sixDaysActives: `${summary.secondHalf.actives['6 dias']}`,
-            sixDaysPending: `${summary.secondHalf.pending['6 dias']}`,
-          });
-        }
-      }
-
-      return tableData;
-    }
-  }
-
-  exportToExcel(trainer: string) {
-    const clientCountsData = this.transformClientCountsToTableData(trainer);
-    const clientAccountsData = this.transformClientAccountsToTableData(trainer);
-
-    // Combina ambas tablas, eliminando columnas repetidas
-    const combinedData = clientCountsData.map((clientRow, index) => ({
-      ...clientRow,
-      ...clientAccountsData[index], // Combina con la fila correspondiente
-    }));
-
-    // Genera un archivo Excel
-    const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(combinedData);
-    const workbook: XLSX.WorkBook = {
-      Sheets: { Datos: worksheet },
-      SheetNames: ['Datos'],
-    };
-
-    // Crea el nombre del archivo: Nombre del entrenador + fecha actual
-    const currentDate = new Date();
-    const formattedDate = currentDate.toLocaleDateString('es-CO', {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    });
-    const fileName = `${trainer} - ${formattedDate}.xlsx`;
-
-    // Exporta el archivo
-    XLSX.writeFile(workbook, fileName);
+    return tableData;
   }
 }

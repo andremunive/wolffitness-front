@@ -23,6 +23,11 @@ const trainerSummary = {
   allClientsCounts: 'all-summary-count/',
   clientsAccounts: 'summary-accounts/',
   allClientsAccounts: 'all-summary-accounts/',
+  clientsSummary: 'trainer-summary/',
+};
+
+const adminMethods = {
+  clientGeneralSummary: 'all-summary/',
 };
 
 export const host = {
@@ -40,5 +45,8 @@ export const host = {
   },
   trainer: {
     methods: trainerSummary,
+  },
+  admin: {
+    methods: adminMethods,
   },
 };

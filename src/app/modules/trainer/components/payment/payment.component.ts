@@ -59,24 +59,18 @@ export class PaymentComponent implements OnInit {
       ?.valueChanges.subscribe((value) => {
         const planValue = this.paymentRecordForm.get('plan')?.value;
         if (value == '80000') {
-          this.validateDiscount();
-          this.hasDiscount = false;
           if (planValue == '6 dias') {
             this.toast.error('No es el valor de el plan  elegido', 'Error');
             this.paymentRecordForm.get('amount')?.setValue('120000');
           }
         }
         if (value == '120000') {
-          this.validateDiscount();
-          this.hasDiscount = false;
           if (planValue == '3 dias') {
             this.toast.error('No es el valor de el plan  elegido', 'Error');
             this.paymentRecordForm.get('amount')?.setValue('80000');
           }
         }
         if (value == 'otro') {
-          this.validateDiscount();
-          this.hasDiscount = true;
           this.paymentRecordForm
             .get('amount')
             ?.setValue('', { emitEvent: false });
@@ -101,6 +95,21 @@ export class PaymentComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  setValidators(activate: boolean) {
+    const discountAmountControl = this.paymentRecordForm.get('discountAmount');
+    const discountReasonControl = this.paymentRecordForm.get('discountReason');
+    this.hasDiscount = activate;
+    if (activate) {
+      discountAmountControl?.setValidators([Validators.required]);
+      discountReasonControl?.setValidators([Validators.required]);
+    } else {
+      discountAmountControl?.clearValidators();
+      discountReasonControl?.clearValidators();
+    }
+    discountAmountControl?.updateValueAndValidity();
+    discountReasonControl?.updateValueAndValidity();
+  }
+
   validateDiscount(): void {
     const discountAmountControl = this.paymentRecordForm.get('discountAmount');
     const discountReasonControl = this.paymentRecordForm.get('discountReason');
@@ -120,8 +129,10 @@ export class PaymentComponent implements OnInit {
   initForm() {
     this.paymentRecordForm = this.formBuilder.group({
       paymentDate: ['', [Validators.required]],
+      receiptDate: [''],
       dueDate: [''],
-      status: ['paid', [Validators.required]],
+      currentPaymentStatus: ['paid', [Validators.required]],
+      previousPaymentStatus: [''],
       plan: ['6 dias', [Validators.required]],
       amount: ['120000', [Validators.required]],
       hasDiscounted: [''],
@@ -158,12 +169,15 @@ export class PaymentComponent implements OnInit {
   submit() {
     if (this.paymentRecordForm.valid) {
       let formData = this.paymentRecordForm.getRawValue();
+      formData.previousPaymentStatus = formData.currentPaymentStatus;
       formData.amount = +formData.amount;
+      formData.dueDate = this.calcDueDate(formData.paymentDate);
+      formData.hasDiscounted = this.hasDiscount;
       formData.discountAmount = formData.discountAmount
         ? +formData.discountAmount
         : 0;
-      formData.dueDate = this.calcDueDate(formData.paymentDate);
-      formData.hasDiscounted = this.hasDiscount;
+      formData.receiptDate =
+        formData.currentPaymentStatus === 'paid' ? formData.paymentDate : null;
       this._payment
         .makePayment(formData, this.data.id)
         .pipe(
@@ -173,7 +187,7 @@ export class PaymentComponent implements OnInit {
                 endDate: formData.dueDate,
                 plan: formData.plan,
                 monthlyPayment: formData.amount,
-                status: formData.status,
+                status: formData.currentPaymentStatus,
                 discount: formData.hasDiscounted,
                 discountAmount: formData.discountAmount,
                 discountReason: formData.discountReason,
@@ -202,6 +216,8 @@ export class PaymentComponent implements OnInit {
         status: status,
       },
     };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     this._payment
       .findPaymentRecord(this.data.id, this.data.attributes.endDate.toString()) // Buscar el registro de pago
       .pipe(
@@ -209,7 +225,7 @@ export class PaymentComponent implements OnInit {
           if (records && records.data.length > 0) {
             const paymentRecordId = records.data[0].id;
             return this._payment
-              .updatePaymentRecord(paymentRecordId, status)
+              .updatePaymentRecord(paymentRecordId, status, today)
               .pipe(
                 switchMap(() =>
                   this._payment.updateClient(payload, this.data.id)

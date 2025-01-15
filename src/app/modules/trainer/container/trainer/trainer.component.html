@@ -5,6 +5,5 @@
     *ngSwitchCase="'Asesorados'"
     (mainSearch)="applyFilter($event)"
   ></app-all-clients>
-  <app-progress *ngSwitchCase="'Perfils'" [clients]="clients"></app-progress>
   <app-profile *ngSwitchCase="'Perfil'"></app-profile>
 </div>
