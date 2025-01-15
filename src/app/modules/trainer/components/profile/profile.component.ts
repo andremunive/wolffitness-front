@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
-import { PaymentService } from 'src/app/services/payment.service';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
@@ -14,8 +13,8 @@ import {
   ClientCountsResponse,
   MonthlyClientSummary,
 } from 'src/app/core/models/clients-count';
-import { switchMap, tap } from 'rxjs';
 import { PaymentSummaryResponse } from 'src/app/core/models/payment-summary';
+import { ClientsSummary, YearData } from 'src/app/core/models/clients-summary';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -35,35 +34,37 @@ export class ProfileComponent implements OnInit {
   trainerName = '';
   dataSource = new MatTableDataSource<any>([]);
   currentMonth: MonthlyClientSummary;
+  currentClients: YearData;
 
   public chartOptionsArray: Partial<ChartOptions>[] = [];
   data: PaymentSummaryResponse;
   chartsToBuild: ClientCountsResponse;
+  charts: ClientsSummary;
   panelOpenState = false;
 
-  displayedColumns: string[] = [
-    'date',
-    'fortNight',
-    'reported',
-    'pendingReported',
-    'bonus',
-    'myFortNight',
+  summaryColumns: string[] = [
+    'fecha',
+    'quincena',
+    'reportadoQuincenaActual',
+    'pendientePorReportar',
+    'reportadoQuincenaPasada',
+    'totalReportado',
+    'bono',
+    'ingreso',
   ];
 
   constructor(
     private _cookies: CookieStorageService,
-    private _payment: PaymentService,
     private _trainerSummary: TrainerSummaryService
   ) {}
 
   ngOnInit(): void {
+    this.getClientsSummary();
     this.trainerName = this._cookies.getCookie('user.name');
-    this.getTrainerSummary();
-    // this.getPaymentSummary();
   }
 
   buildCharts() {
-    const attributes = this.chartsToBuild.data.attributes;
+    const attributes = this.charts.data.attributes;
     for (const month in attributes) {
       if (attributes.hasOwnProperty(month)) {
         // Primera quincena
@@ -71,10 +72,10 @@ export class ProfileComponent implements OnInit {
         const firstHalf = monthData.firstHalf;
         this.chartOptionsArray.push({
           series: [
-            firstHalf.actives['3 dias'],
-            firstHalf.pending['3 dias'],
-            firstHalf.actives['6 dias'],
-            firstHalf.pending['6 dias'],
+            firstHalf.threeDaysPlanTotalPayments,
+            firstHalf.threeDaysPlanTotalPending,
+            firstHalf.sixDaysPlanTotalPayments,
+            firstHalf.sixDaysPlanTotalPending,
           ],
           chart: {
             width: 500,
@@ -115,10 +116,10 @@ export class ProfileComponent implements OnInit {
         const secondHalf = monthData.secondHalf;
         this.chartOptionsArray.push({
           series: [
-            secondHalf.actives['3 dias'],
-            secondHalf.pending['3 dias'],
-            secondHalf.actives['6 dias'],
-            secondHalf.pending['6 dias'],
+            secondHalf.threeDaysPlanTotalPayments,
+            secondHalf.threeDaysPlanTotalPending,
+            secondHalf.sixDaysPlanTotalPayments,
+            secondHalf.sixDaysPlanTotalPending,
           ],
           chart: {
             width: 500,
@@ -158,51 +159,50 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  transformPaymentSummaryToTableData(response: PaymentSummaryResponse) {
+  getClientsSummary() {
+    this._trainerSummary
+      .getClientsSummary(2)
+      .subscribe((summary: ClientsSummary) => {
+        this.charts = summary;
+        this.buildCharts();
+        this.currentClients = Object.values(summary.data.attributes)[0];
+        this.dataSource.data = this.transformSummaryToTableData(summary);
+      });
+  }
+
+  transformSummaryToTableData(payment: ClientsSummary) {
     const tableData: any[] = [];
 
-    const attributes = response.data.attributes;
+    const attributes = payment.data.attributes;
 
     for (const month in attributes) {
       if (attributes.hasOwnProperty(month)) {
         const summary = attributes[month];
         tableData.push({
-          date: `${month}`,
-          fortNight: `Primera quincena`,
-          totalCollected: summary.firstHalf.totalCollected,
-          totalGenerated: summary.firstHalf.totalGenerated,
-          pendingGenerated: summary.firstHalf.pendingGenerated,
-          bonus: summary.firstHalf.bonus,
+          fecha: `${month}`,
+          quincena: `Primera`,
+          reportadoQuincenaActual: `${summary.firstHalf.fortNightIncome}`,
+          pendientePorReportar: `${summary.firstHalf.pendinIncome}`,
+          reportadoQuincenaPasada: `${summary.firstHalf.incomeFromLastFortNight}`,
+          totalReportado: `${summary.firstHalf.grossIncome}`,
+          bono: `${summary.firstHalf.monthBonus}`,
+          ingreso: `${summary.firstHalf.trainerIncome}`,
         });
         tableData.push({
-          date: `${month}`,
-          fortNight: `Segunda quincena`,
-          totalCollected: summary.secondHalf.totalCollected,
-          totalGenerated: summary.secondHalf.totalGenerated,
-          pendingGenerated: summary.secondHalf.pendingGenerated,
-          bonus: summary.secondHalf.bonus,
+          fecha: `${month}`,
+          quincena: `Segunda`,
+          reportadoQuincenaActual: `${summary.secondHalf.fortNightIncome}`,
+          pendientePorReportar: `${summary.secondHalf.pendinIncome}`,
+          reportadoQuincenaPasada: `${summary.secondHalf.incomeFromLastFortNight}`,
+          totalReportado: `${summary.secondHalf.grossIncome}`,
+          bono: `${summary.secondHalf.monthBonus}`,
+          ingreso: `${
+            summary.secondHalf.trainerIncome + summary.secondHalf.monthBonus
+          }`,
         });
       }
     }
 
     return tableData;
-  }
-
-  getTrainerSummary() {
-    this._trainerSummary
-      .getClientCountsByTrainer(2)
-      .pipe(
-        tap((clientCounts: ClientCountsResponse) => {
-          this.chartsToBuild = clientCounts;
-          this.buildCharts();
-          this.currentMonth = Object.values(clientCounts.data.attributes)[0];
-        }),
-        switchMap(() => this._trainerSummary.getClientAccountsByTrainer(2))
-      )
-      .subscribe((clientAccounts: PaymentSummaryResponse) => {
-        const tableData =
-          this.transformPaymentSummaryToTableData(clientAccounts);
-        this.dataSource.data = tableData;
-      });
   }
 }

@@ -24,10 +24,12 @@ export class PaymentService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
+    const trainerId = this.cookiesStorageService.getCookie('user.id');
     const payload = {
       data: {
         ...paymentRecord,
         client: clientId, // Relación con el cliente
+        trainer: +trainerId,
       },
     };
     return this.http.post(URL, payload, { headers });
@@ -57,42 +59,17 @@ export class PaymentService {
     return this.http.get<PaymentRecordResponse>(url, { headers });
   }
 
-  updatePaymentRecord(paymentRecordId: number, status: string) {
+  updatePaymentRecord(paymentRecordId: number, status: string, date: Date) {
     const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}${paymentRecordId}`;
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
     });
     const payload = {
       data: {
-        status: status,
+        currentPaymentStatus: status,
+        receiptDate: date,
       },
     };
     return this.http.put(url, payload, { headers });
-  }
-
-  getPaymentsByTrainer(trainerName: string) {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}/trainer/${trainerName}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
-    });
-    return this.http.get(url, { headers });
-  }
-
-  getPaymentSummaryByTrainer(
-    trainerName: string,
-    months: number
-  ): Observable<PaymentSummaryResponse> {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}summary/${trainerName}/${months}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
-    });
-    return this.http.get<PaymentSummaryResponse>(url, { headers });
-  }
-  getAllPaymentSummary(months: number): Observable<AllPaymentSummaryResponse> {
-    const url = `${environment.URL_BASE}${environment.host.payment.methods.paymentRecords}all-summary/${months}`;
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.cookiesStorageService.getJWT()}`,
-    });
-    return this.http.get<AllPaymentSummaryResponse>(url, { headers });
   }
 }
