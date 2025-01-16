@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxLoadingModule } from 'ngx-loading';
 
 @NgModule({
   declarations: [AppComponent, MainComponent],
@@ -26,6 +27,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     MatFormFieldModule,
     MatToolbarModule,
     NgxPaginationModule,
+    NgxLoadingModule.forRoot({}),
   ],
   providers: [],
   bootstrap: [AppComponent],

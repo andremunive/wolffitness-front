@@ -23,6 +23,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { MatTableModule } from '@angular/material/table';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { NgxLoadingModule } from 'ngx-loading';
 @NgModule({
   declarations: [
     TrainerComponent,
@@ -50,6 +51,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
     FormsModule,
     MatDialogModule,
     MatSlideToggleModule,
+    NgxLoadingModule.forRoot({}),
   ],
 })
 export class TrainerModule {}

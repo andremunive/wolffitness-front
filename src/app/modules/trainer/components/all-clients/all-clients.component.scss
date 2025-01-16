@@ -54,11 +54,24 @@
     justify-content: center;
   }
 }
-form {
+
+.filters-form {
   display: flex;
-  mat-form-field {
+  flex-direction: column;
+
+  .form-row {
     display: flex;
-    align-items: center;
-    margin-right: 12px;
+    flex-wrap: wrap;
+    gap: 16px; /* Espaciado entre campos */
+
+    @media (min-width: 600px) {
+      /* Pantallas más grandes */
+      flex-direction: row;
+      justify-content: space-between;
+    }
   }
+}
+
+mat-form-field {
+  margin-right: 12px;
 }

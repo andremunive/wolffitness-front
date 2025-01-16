@@ -41,11 +41,17 @@ export class CardComponent {
   }
 
   openAssessment(client: Datum) {
-    const dialogRef = this.dialog.open(AssessmentComponent, { data: client });
+    const dialogRef = this.dialog.open(AssessmentComponent, {
+      disableClose: true,
+      data: client,
+    });
   }
 
   openPayment(client: Datum) {
-    const dialogRef = this.dialog.open(PaymentComponent, { data: client });
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      disableClose: true,
+      data: client,
+    });
   }
 
   clientDetails(client: Datum) {
@@ -53,6 +59,9 @@ export class CardComponent {
   }
 
   editClient(client: Datum) {
-    const dialogRef = this.dialog.open(EditClientComponent, { data: client });
+    const dialogRef = this.dialog.open(EditClientComponent, {
+      disableClose: true,
+      data: client,
+    });
   }
 }

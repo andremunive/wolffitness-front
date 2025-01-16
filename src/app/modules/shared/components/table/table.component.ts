@@ -109,11 +109,17 @@ export class TableComponent implements OnInit, OnChanges {
   }
 
   editClient(client: Datum) {
-    const dialogRef = this.dialog.open(EditClientComponent, { data: client });
+    const dialogRef = this.dialog.open(EditClientComponent, {
+      disableClose: true,
+      data: client,
+    });
   }
 
   openPayment(client: Datum) {
-    const dialogRef = this.dialog.open(PaymentComponent, { data: client });
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      disableClose: true,
+      data: client,
+    });
   }
 
   openAssessment(client: Datum) {

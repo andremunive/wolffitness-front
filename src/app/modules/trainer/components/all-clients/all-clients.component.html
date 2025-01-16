@@ -23,13 +23,29 @@
 <!-- Contenedor de filtros -->
 <div class="filters" *ngIf="showFilters" [@filterAnimation]>
   <form [formGroup]="filtersForm" (submit)="applyFilters()">
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Quincena</mat-label>
-      <mat-select formControlName="fortNight">
-        <mat-option value="1">Primera</mat-option>
-        <mat-option value="2">Segunda</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div class="form-row">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Quincena</mat-label>
+        <mat-select formControlName="fortNight">
+          <mat-option value="1">Primera</mat-option>
+          <mat-option value="2">Segunda</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Estado</mat-label>
+        <mat-select formControlName="state">
+          <mat-option value="paid">Al dia</mat-option>
+          <mat-option value="pending">Pendiente</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Descuento</mat-label>
+        <mat-select formControlName="discount">
+          <mat-option [value]="true">Con descuento</mat-option>
+          <mat-option [value]="false">Sin descuento</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <mat-dialog-actions align="end">
       <button mat-flat-button color="primary" type="submit">Filtrar</button>
     </mat-dialog-actions>
@@ -50,3 +66,14 @@
   [pagination]="pagination"
   (paginationChange)="onPageChange($event)"
 ></app-card>
+
+<ngx-loading
+  [show]="loading"
+  [config]="{
+    animationType: ngxLoadingAnimationTypes.wanderingCubes,
+    primaryColour: primaryColour,
+    secondaryColour: secondaryColour,
+    backdropBorderRadius: '3px'
+  }"
+  [template]="loadingTemplate"
+></ngx-loading>

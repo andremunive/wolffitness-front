@@ -71,6 +71,13 @@ export class ClientsService {
       }
     }
 
+    if (filters?.state) {
+      params = params.set('filters[status][$eq]', filters.state);
+    }
+    if (filters?.discount === false || filters?.discount === true) {
+      params = params.set('filters[discount][$eq]', filters.discount);
+    }
+
     // Realizar la petición con o sin parámetros
     if (params.keys().length) {
       return this.http.get<ClientModelSearch>(url, { params, headers });

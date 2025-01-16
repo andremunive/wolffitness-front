@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
 import {
@@ -15,6 +15,7 @@ import {
 } from 'src/app/core/models/clients-count';
 import { PaymentSummaryResponse } from 'src/app/core/models/payment-summary';
 import { ClientsSummary, YearData } from 'src/app/core/models/clients-summary';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
 
 export type ChartOptions = {
   series: ApexNonAxisChartSeries;
@@ -31,6 +32,12 @@ export type ChartOptions = {
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
+  PrimaryWhite = '#ffffff';
+  SecondaryGrey = '#ccc';
+  public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
+  public primaryColour = this.PrimaryWhite;
+  public secondaryColour = this.SecondaryGrey;
+  public loadingTemplate!: TemplateRef<any>;
   trainerName = '';
   dataSource = new MatTableDataSource<any>([]);
   currentMonth: MonthlyClientSummary;
@@ -41,6 +48,7 @@ export class ProfileComponent implements OnInit {
   chartsToBuild: ClientCountsResponse;
   charts: ClientsSummary;
   panelOpenState = false;
+  loading = false;
 
   summaryColumns: string[] = [
     'fecha',
@@ -160,6 +168,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getClientsSummary() {
+    this.loading = true;
     this._trainerSummary
       .getClientsSummary(2)
       .subscribe((summary: ClientsSummary) => {
@@ -167,6 +176,7 @@ export class ProfileComponent implements OnInit {
         this.buildCharts();
         this.currentClients = Object.values(summary.data.attributes)[0];
         this.dataSource.data = this.transformSummaryToTableData(summary);
+        this.loading = false;
       });
   }
 

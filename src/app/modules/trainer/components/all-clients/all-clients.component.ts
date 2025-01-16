@@ -4,6 +4,7 @@ import {
   EventEmitter,
   OnInit,
   Output,
+  TemplateRef,
 } from '@angular/core';
 import {
   ClientModel,
@@ -20,6 +21,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { GlobalService } from 'src/app/services/global.service';
 import { FiltersModel } from 'src/app/core/models/filter.model';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
+import { ngxLoadingAnimationTypes } from 'ngx-loading';
 
 @Component({
   selector: 'app-all-clients',
@@ -38,6 +40,12 @@ import { CookieStorageService } from 'src/app/services/cookie-storage.service';
   ],
 })
 export class AllClientsComponent implements OnInit {
+  PrimaryWhite = '#ffffff';
+  SecondaryGrey = '#ccc';
+  public ngxLoadingAnimationTypes = ngxLoadingAnimationTypes;
+  public primaryColour = this.PrimaryWhite;
+  public secondaryColour = this.SecondaryGrey;
+  public loadingTemplate!: TemplateRef<any>;
   clients: Datum[] = [];
   pagination: Pagination;
   @Output() mainSearch = new EventEmitter();
@@ -52,6 +60,7 @@ export class AllClientsComponent implements OnInit {
   showFilters: boolean = false;
   filters: FiltersModel;
   trainer: string;
+  loading = false;
 
   searchClient = '';
 
@@ -105,6 +114,8 @@ export class AllClientsComponent implements OnInit {
     this.filtersForm = this.formBuilder.group({
       trainer: [''],
       fortNight: [''],
+      state: [''],
+      discount: [''],
     });
   }
 
@@ -122,6 +133,7 @@ export class AllClientsComponent implements OnInit {
   }
 
   getUsers(pagination?: any) {
+    this.loading = true;
     const pageSize = pagination ? pagination.pageSize + '' : '10';
     const page = pagination ? pagination.pageIndex + 1 + '' : '1';
     this.filters.trainer = this.trainer;
@@ -130,6 +142,7 @@ export class AllClientsComponent implements OnInit {
       .subscribe((res: ClientModelSearch) => {
         this.clients = res.data;
         this.pagination = res.meta.pagination;
+        this.loading = false;
       });
   }
 
