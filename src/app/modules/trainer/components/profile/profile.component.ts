@@ -195,7 +195,7 @@ export class ProfileComponent implements OnInit {
           pendientePorReportar: `${summary.firstHalf.pendinIncome}`,
           reportadoQuincenaPasada: `${summary.firstHalf.incomeFromLastFortNight}`,
           totalReportado: `${summary.firstHalf.grossIncome}`,
-          bono: `${summary.firstHalf.monthBonus}`,
+          bono: `0`,
           ingreso: `${summary.firstHalf.trainerIncome}`,
         });
         tableData.push({
@@ -206,9 +206,7 @@ export class ProfileComponent implements OnInit {
           reportadoQuincenaPasada: `${summary.secondHalf.incomeFromLastFortNight}`,
           totalReportado: `${summary.secondHalf.grossIncome}`,
           bono: `${summary.secondHalf.monthBonus}`,
-          ingreso: `${
-            summary.secondHalf.trainerIncome + summary.secondHalf.monthBonus
-          }`,
+          ingreso: `${summary.secondHalf.trainerIncome}`,
         });
       }
     }

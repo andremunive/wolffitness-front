@@ -68,6 +68,145 @@ export class ProfileComponent implements OnInit {
       });
   }
 
+  transformGeneralSummary() {
+    const tableData: any[] = [];
+    const rubyAttributes: TrainerData =
+      this.clientGeneralSummary.data.attributes['Ruby Manjarres'];
+    const ivanAttributes: TrainerData =
+      this.clientGeneralSummary.data.attributes['Ivan Romero'];
+    const julioAttributes: TrainerData =
+      this.clientGeneralSummary.data.attributes['Julio Munive'];
+    for (const month in rubyAttributes) {
+      const rubySummary = rubyAttributes[month];
+      const ivanSummary = ivanAttributes[month];
+      const julioSummary = julioAttributes[month];
+      tableData.push({
+        fecha: `${month}`,
+        quincena: 'Primera',
+        clientesActivos6Dias: `${
+          rubySummary.firstHalf.sixDaysPlanTotalPayments +
+          julioSummary.firstHalf.sixDaysPlanTotalPayments +
+          ivanSummary.firstHalf.sixDaysPlanTotalPayments
+        }`,
+        clientesPendientes6Dias: `${
+          rubySummary.firstHalf.sixDaysPlanTotalPending +
+          julioSummary.firstHalf.sixDaysPlanTotalPending +
+          ivanSummary.firstHalf.sixDaysPlanTotalPending
+        }`,
+        clientesActivos3Dias: `${
+          rubySummary.firstHalf.threeDaysPlanTotalPayments +
+          julioSummary.firstHalf.threeDaysPlanTotalPayments +
+          ivanSummary.firstHalf.threeDaysPlanTotalPayments
+        }`,
+        clientesPendientes3Dias: `${
+          rubySummary.firstHalf.threeDaysPlanTotalPending +
+          julioSummary.firstHalf.threeDaysPlanTotalPending +
+          ivanSummary.firstHalf.threeDaysPlanTotalPending
+        }`,
+        ingresosDeEstaQuincena: `${
+          rubySummary.firstHalf.fortNightIncome +
+          julioSummary.firstHalf.fortNightIncome +
+          ivanSummary.firstHalf.fortNightIncome
+        }`,
+        ingresosQuincenaPasada: `${
+          rubySummary.firstHalf.incomeFromLastFortNight +
+          julioSummary.firstHalf.incomeFromLastFortNight +
+          ivanSummary.firstHalf.incomeFromLastFortNight
+        }`,
+        ingresosPendientes: `${
+          rubySummary.firstHalf.pendinIncome +
+          julioSummary.firstHalf.pendinIncome +
+          ivanSummary.firstHalf.pendinIncome
+        }`,
+        ingresoBruto: `${
+          rubySummary.firstHalf.grossIncome +
+          julioSummary.firstHalf.grossIncome +
+          ivanSummary.firstHalf.grossIncome
+        }`,
+        bonoDelMes: `0`,
+        pagoDelEntrenador: `${
+          rubySummary.firstHalf.trainerIncome +
+          julioSummary.firstHalf.trainerIncome +
+          ivanSummary.firstHalf.trainerIncome
+        }`,
+        ingresoNeto: `${
+          rubySummary.firstHalf.grossIncome -
+          rubySummary.firstHalf.trainerIncome +
+          (julioSummary.firstHalf.grossIncome -
+            julioSummary.firstHalf.trainerIncome) +
+          (ivanSummary.firstHalf.grossIncome -
+            ivanSummary.firstHalf.trainerIncome)
+        }`,
+      });
+      tableData.push({
+        fecha: `${month}`,
+        quincena: 'Segunda',
+        clientesActivos6Dias: `${
+          rubySummary.secondHalf.sixDaysPlanTotalPayments +
+          julioSummary.secondHalf.sixDaysPlanTotalPayments +
+          ivanSummary.secondHalf.sixDaysPlanTotalPayments
+        }`,
+        clientesPendientes6Dias: `${
+          rubySummary.secondHalf.sixDaysPlanTotalPending +
+          julioSummary.secondHalf.sixDaysPlanTotalPending +
+          ivanSummary.secondHalf.sixDaysPlanTotalPending
+        }`,
+        clientesActivos3Dias: `${
+          rubySummary.secondHalf.threeDaysPlanTotalPayments +
+          julioSummary.secondHalf.threeDaysPlanTotalPayments +
+          ivanSummary.secondHalf.threeDaysPlanTotalPayments
+        }`,
+        clientesPendientes3Dias: `${
+          rubySummary.secondHalf.threeDaysPlanTotalPending +
+          julioSummary.secondHalf.threeDaysPlanTotalPending +
+          ivanSummary.secondHalf.threeDaysPlanTotalPending
+        }`,
+        ingresosDeEstaQuincena: `${
+          rubySummary.secondHalf.fortNightIncome +
+          julioSummary.secondHalf.fortNightIncome +
+          ivanSummary.secondHalf.fortNightIncome
+        }`,
+        ingresosQuincenaPasada: `${
+          rubySummary.secondHalf.incomeFromLastFortNight +
+          julioSummary.secondHalf.incomeFromLastFortNight +
+          ivanSummary.secondHalf.incomeFromLastFortNight
+        }`,
+        ingresosPendientes: `${
+          rubySummary.secondHalf.pendinIncome +
+          julioSummary.secondHalf.pendinIncome +
+          ivanSummary.secondHalf.pendinIncome
+        }`,
+        ingresoBruto: `${
+          rubySummary.secondHalf.grossIncome +
+          julioSummary.secondHalf.grossIncome +
+          ivanSummary.secondHalf.grossIncome
+        }`,
+        bonoDelMes: `${
+          rubySummary.secondHalf.monthBonus +
+          julioSummary.secondHalf.monthBonus +
+          ivanSummary.secondHalf.monthBonus
+        }`,
+        pagoDelEntrenador: `${
+          rubySummary.secondHalf.trainerIncome +
+          julioSummary.secondHalf.trainerIncome +
+          ivanSummary.secondHalf.trainerIncome
+        }`,
+        ingresoNeto: `${
+          rubySummary.secondHalf.grossIncome -
+          rubySummary.secondHalf.trainerIncome -
+          rubySummary.secondHalf.monthBonus +
+          (julioSummary.secondHalf.grossIncome -
+            julioSummary.secondHalf.trainerIncome -
+            julioSummary.secondHalf.monthBonus) +
+          (ivanSummary.secondHalf.grossIncome -
+            ivanSummary.secondHalf.trainerIncome -
+            ivanSummary.secondHalf.monthBonus)
+        }`,
+      });
+    }
+    return tableData;
+  }
+
   transformSummaryToTableData(trainer: string) {
     const tableData: any[] = [];
     const attributes: TrainerData =
@@ -85,7 +224,7 @@ export class ProfileComponent implements OnInit {
         ingresosQuincenaPasada: `${summary.firstHalf.incomeFromLastFortNight}`,
         ingresosPendientes: `${summary.firstHalf.pendinIncome}`,
         ingresoBruto: `${summary.firstHalf.grossIncome}`,
-        bonoDelMes: `${summary.firstHalf.monthBonus}`,
+        bonoDelMes: `0`,
         pagoDelEntrenador: `${summary.firstHalf.trainerIncome}`,
         ingresoNeto: `${
           summary.firstHalf.grossIncome - summary.firstHalf.trainerIncome
@@ -103,9 +242,7 @@ export class ProfileComponent implements OnInit {
         ingresosPendientes: `${summary.secondHalf.pendinIncome}`,
         ingresoBruto: `${summary.secondHalf.grossIncome}`,
         bonoDelMes: `${summary.secondHalf.monthBonus}`,
-        pagoDelEntrenador: `${
-          summary.secondHalf.trainerIncome + summary.secondHalf.monthBonus
-        }`,
+        pagoDelEntrenador: `${summary.secondHalf.trainerIncome}`,
         ingresoNeto: `${
           summary.secondHalf.grossIncome -
           summary.secondHalf.trainerIncome -
