@@ -61,7 +61,7 @@ export class ProfileComponent implements OnInit {
 
   getClientGeneralSummary() {
     this._admin
-      .getCLientGeneralSummary(2)
+      .getCLientGeneralSummary(3)
       .subscribe((summary: ClientGeneralSummary) => {
         this.clientGeneralSummary = summary;
         this.trainers = Object.keys(summary?.data.attributes);

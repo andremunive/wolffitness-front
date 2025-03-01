@@ -170,7 +170,7 @@ export class ProfileComponent implements OnInit {
   getClientsSummary() {
     this.loading = true;
     this._trainerSummary
-      .getClientsSummary(2)
+      .getClientsSummary(3)
       .subscribe((summary: ClientsSummary) => {
         this.charts = summary;
         this.buildCharts();
