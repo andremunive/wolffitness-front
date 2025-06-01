@@ -7,6 +7,11 @@ import { CookieService } from 'ngx-cookie-service';
 export class CookieStorageService {
   constructor(private cookieService: CookieService) {}
 
+  getPermissions(): Record<string, boolean> {
+    const raw = this.cookieService.get('permissions');
+    return raw ? JSON.parse(raw) : {};
+  }
+
   setCookie(key: string, value: string) {
     this.cookieService.set(key, value);
   }

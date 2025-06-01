@@ -13,9 +13,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgxLoadingModule } from 'ngx-loading';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { LoaderComponent } from './shared/components/loader/loader.component';
 
 @NgModule({
-  declarations: [AppComponent, MainComponent],
+  declarations: [AppComponent, MainComponent, NavbarComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -28,6 +30,7 @@ import { NgxLoadingModule } from 'ngx-loading';
     MatToolbarModule,
     NgxPaginationModule,
     NgxLoadingModule.forRoot({}),
+    LoaderComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

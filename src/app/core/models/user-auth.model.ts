@@ -16,4 +16,9 @@ export interface User {
   username: string;
   wfRole: RolesEnum;
   name: string;
+  permissions: UserPermissions;
+}
+
+export interface UserPermissions {
+  [key: string]: boolean; // ej: { home: true, clientes: false }
 }

@@ -1,0 +1,65 @@
+<div class="gx-login-container">
+  <div class="gx-login-form">
+    <img
+      src="../../../../assets/images/png/wf-logo.png"
+      alt="Logo"
+      class="logo"
+    />
+
+    <h2 class="title">Bienvenido a <strong>Wolf Fitness</strong></h2>
+    <p class="subtitle">Ingresa a tu cuenta</p>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>User</mat-label>
+        <input matInput formControlName="user" placeholder="wolffitness user" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          formControlName="password"
+          placeholder="********"
+        />
+        <button
+          class="hide-password-btn"
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          type="button"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="login-button"
+        type="submit"
+      >
+        Sign in
+      </button>
+    </form>
+
+    <div class="footer">
+      <span>© 2025 CO – Committed to better quality</span>
+      <span>Design & Development By AndresMunive</span>
+      <span class="version">Version 1.0.0</span>
+    </div>
+  </div>
+
+  <div class="gx-login-image">
+    <img src="../../../../assets/images/webp/logo-bg.webp" alt="Login Image" />
+    <div class="quote-box">
+      <p class="quote">
+        <span class="author">Gordon B. Hinckley</span><br />
+        “Without hard work, nothing grows but weeds.”
+      </p>
+    </div>
+  </div>
+</div>

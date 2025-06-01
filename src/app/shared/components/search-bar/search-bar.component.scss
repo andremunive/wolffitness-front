@@ -1,0 +1,19 @@
+.search-bar {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+
+  .search-input {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  button {
+    margin-top: 4px;
+  }
+}
+
+.filters {
+  padding: 9px;
+  overflow: hidden;
+}

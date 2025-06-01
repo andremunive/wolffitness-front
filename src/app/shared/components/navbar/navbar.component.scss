@@ -1,0 +1,58 @@
+.sidenav-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+mat-sidenav-container {
+  height: 100vh;
+}
+
+mat-sidenav-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.logout {
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  margin-left: 16px;
+  font-weight: bold;
+}
+
+.sidenav {
+  width: 250px;
+}
+
+::ng-deep .mat-drawer-inner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logout-icon {
+  margin-left: 6px;
+}
+
+::ng-deep .mat-mdc-list-item-unscoped-content {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.active {
+  background-color: rgb(234, 234, 234);
+}

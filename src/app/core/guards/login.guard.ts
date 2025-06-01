@@ -3,7 +3,6 @@ import {
   CanActivate,
   Router,
   ActivatedRouteSnapshot,
-  RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
 import { CookieStorageService } from 'src/app/services/cookie-storage.service';
@@ -11,7 +10,7 @@ import { CookieStorageService } from 'src/app/services/cookie-storage.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class LoginGuard implements CanActivate {
   constructor(
     private _cookiesStorage: CookieStorageService,
     private router: Router
@@ -22,7 +21,7 @@ export class AuthGuard implements CanActivate {
     const permissionsCookie = this._cookiesStorage.getCookie('permissions');
 
     if (!jwt || !permissionsCookie) {
-      return this.router.parseUrl('/login'); // No está autenticado
+      return true;
     }
 
     try {
@@ -30,13 +29,13 @@ export class AuthGuard implements CanActivate {
       const hasPermission = permissions['home'] === true;
 
       if (hasPermission) {
-        return true;
+        return this.router.parseUrl(''); // Puedes crear una página de acceso denegado
       } else {
-        return this.router.parseUrl('/login'); // Puedes crear una página de acceso denegado
+        return true;
       }
     } catch (e) {
       console.error('Error al parsear permisos:', e);
-      return this.router.parseUrl('/login');
+      return this.router.parseUrl('');
     }
   }
 }

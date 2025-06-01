@@ -1,0 +1,11 @@
+<h1 style="text-align: center">Clientes</h1>
+
+<app-search-bar></app-search-bar>
+<app-table
+  [clients]="clients"
+  [role]="role"
+  [permissions]="permissions"
+  [columnsToDisplay]="columnsToDisplay"
+  (paginationChange)="onPageChange($event)"
+  [isActionable]="true"
+></app-table>

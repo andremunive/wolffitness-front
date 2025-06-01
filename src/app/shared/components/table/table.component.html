@@ -1,0 +1,82 @@
+<div class="mat-elevation-z1">
+  <table mat-table [dataSource]="data">
+    <ng-container
+      *ngFor="let column of columnsToDisplay"
+      [matColumnDef]="column.matColumnDef"
+    >
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        [hidden]="!displayedColumns.includes(column.matColumnDef)"
+      >
+        {{ column.name }}
+      </th>
+
+      <td mat-cell *matCellDef="let row">
+        <ng-container [ngSwitch]="column.dataType">
+          <span *ngSwitchCase="'texto'">{{
+            row.attributes[column.matColumnDef]
+          }}</span>
+          <span *ngSwitchCase="'date'">{{
+            row.attributes[column.matColumnDef] | date
+          }}</span>
+          <span *ngSwitchCase="'currency'">{{
+            row.attributes[column.matColumnDef] | currency
+          }}</span>
+          <span *ngSwitchDefault>-</span>
+        </ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container *ngIf="isActionable" matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <td mat-cell *matCellDef="let client">
+        <button
+          *ngIf="role === RolesEnum.ADMIN"
+          mat-icon-button
+          color="primary"
+          matTooltip="Editar cliente"
+          (click)="editClient(client)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          *ngIf="role === RolesEnum.ADMIN || role === RolesEnum.TRAINER"
+          mat-icon-button
+          color="primary"
+          matTooltip="Ver cliente"
+        >
+          <mat-icon>visibility</mat-icon>
+        </button>
+        <button
+          *ngIf="role === RolesEnum.ADMIN || role === RolesEnum.TRAINER"
+          mat-icon-button
+          color="primary"
+          matTooltip="Realizar pago"
+        >
+          <mat-icon>credit_score</mat-icon>
+        </button>
+        <button
+          *ngIf="role === RolesEnum.ADMIN || role === RolesEnum.TRAINER"
+          mat-icon-button
+          color="primary"
+          matTooltip="Valoracion"
+        >
+          <mat-icon>straighten</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [length]="pagination?.total"
+    [pageSizeOptions]="[10, 25, 50]"
+    [pageSize]="pagination?.pageSize"
+    [pageIndex]="pagination?.page - 1"
+    (page)="onPageChange($event)"
+    showFirstLastButtons
+  >
+  </mat-paginator>
+</div>

@@ -1,0 +1,64 @@
+<div class="search-bar">
+  <mat-form-field appearance="outline" class="search-input">
+    <mat-label>Buscar</mat-label>
+    <input
+      matInput
+      [(ngModel)]="searchTerm"
+      (keyup.enter)="onSearch()"
+      placeholder="Escribe algo..."
+    />
+  </mat-form-field>
+
+  <button mat-fab extended color="primary" (click)="toggleFilters()">
+    <mat-icon>filter_list</mat-icon>Filtros
+  </button>
+</div>
+
+<div class="filters" *ngIf="showFilters" [@filterAnimation]>
+  <form [formGroup]="filtersForm" (submit)="applyFilters()">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Entrenador</mat-label>
+      <mat-select formControlName="trainer">
+        <mat-option value="Ruby Manjarres">Ruby Manjarres</mat-option>
+        <mat-option value="Ivan Romero">Ivan Romero</mat-option>
+        <mat-option value="Julio Munive">Julio Munive</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Quincena</mat-label>
+      <mat-select formControlName="fortNight">
+        <mat-option value="1">Primera</mat-option>
+        <mat-option value="2">Segunda</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="paid">Al dia</mat-option>
+        <mat-option value="pendiente">Pendiente</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Plan</mat-label>
+      <mat-select formControlName="plan">
+        <mat-option value="3 dias">3 dias</mat-option>
+        <mat-option value="6 dias">6 dias</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Descuento</mat-label>
+      <mat-select formControlName="discount">
+        <mat-option [value]="true">Con descuento</mat-option>
+        <mat-option [value]="false">Sin descuento</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo de descuento</mat-label>
+      <mat-select formControlName="discountReason">
+        <mat-option value="Personal">Personal</mat-option>
+        <mat-option value="Promocion">Promocion</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>

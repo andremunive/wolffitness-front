@@ -1,0 +1,35 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" mode="side" (click)="toggleDrawer()">
+    <mat-nav-list>
+      <div *ngFor="let option of navbarMenu">
+        <a
+          [routerLink]="[option.URL]"
+          routerLinkActive="router-link-active"
+          [ngClass]="{ active: option.active }"
+          *ngIf="option.hasPermission"
+          mat-list-item
+          >{{ option.text }}</a
+        >
+      </div>
+    </mat-nav-list>
+    <mat-nav-list>
+      <a mat-list-item class="logout" (click)="logout()"
+        >Cerrar Sesion
+        <mat-icon class="logout-icon">power_settings_new</mat-icon>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="toggleDrawer()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="logo">WOLF FITNESS</span>
+    </mat-toolbar>
+
+    <div class="content">
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
