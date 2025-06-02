@@ -8,7 +8,7 @@
       [style.width.%]="
         ((currentClients?.firstHalf.sixDaysPlanTotalPayments +
           currentClients?.secondHalf.sixDaysPlanTotalPayments) /
-          7) *
+          10) *
         100
       "
     >
@@ -110,15 +110,7 @@
               {{ summary.totalReportado | currency }}
             </td>
           </ng-container>
-          <ng-container matColumnDef="bono">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>
-              Bono del mes
-            </th>
-            <td mat-cell *matCellDef="let summary">
-              <span class="status-circle"></span>
-              {{ summary.bono | currency }}
-            </td>
-          </ng-container>
+
           <ng-container matColumnDef="ingreso">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>
               Mis ingresos

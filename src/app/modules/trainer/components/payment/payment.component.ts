@@ -50,7 +50,7 @@ export class PaymentComponent implements OnInit {
     this.planSubscription = this.paymentRecordForm
       .get('plan')
       ?.valueChanges.subscribe((value) => {
-        const newAmountValue = value == '3 dias' ? '80000' : '120000';
+        const newAmountValue = value == '3 dias' ? '110000' : '160000';
         this.paymentRecordForm.get('amount')?.setValue(newAmountValue);
       });
 
@@ -58,16 +58,16 @@ export class PaymentComponent implements OnInit {
       .get('amount')
       ?.valueChanges.subscribe((value) => {
         const planValue = this.paymentRecordForm.get('plan')?.value;
-        if (value == '80000') {
+        if (value == '110000') {
           if (planValue == '6 dias') {
             this.toast.error('No es el valor de el plan  elegido', 'Error');
-            this.paymentRecordForm.get('amount')?.setValue('120000');
+            this.paymentRecordForm.get('amount')?.setValue('160000');
           }
         }
-        if (value == '120000') {
+        if (value == '160000') {
           if (planValue == '3 dias') {
             this.toast.error('No es el valor de el plan  elegido', 'Error');
-            this.paymentRecordForm.get('amount')?.setValue('80000');
+            this.paymentRecordForm.get('amount')?.setValue('110000');
           }
         }
         if (value == 'otro') {
@@ -82,8 +82,8 @@ export class PaymentComponent implements OnInit {
       ?.valueChanges.subscribe(() => {
         const amount =
           this.paymentRecordForm.get('plan')?.value == '3 dias'
-            ? '80000'
-            : '120000';
+            ? '110000'
+            : '160000';
 
         this.paymentRecordForm
           .get('amount')
@@ -134,7 +134,7 @@ export class PaymentComponent implements OnInit {
       currentPaymentStatus: ['paid', [Validators.required]],
       previousPaymentStatus: [''],
       plan: ['6 dias', [Validators.required]],
-      amount: ['120000', [Validators.required]],
+      amount: ['160000', [Validators.required]],
       hasDiscounted: [''],
       discountAmount: [''],
       discountReason: [''],

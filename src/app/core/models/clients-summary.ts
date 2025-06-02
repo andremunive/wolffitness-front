@@ -21,5 +21,4 @@ export interface FortnightData {
   incomeFromLastFortNight: number; // Ingresos de la quincena pasada
   grossIncome: number; // Ingreso bruto
   trainerIncome: number; // Ingreso del entrenador
-  monthBonus: number; // Bono mensual
 }

@@ -30,7 +30,6 @@ export interface PaymentPeriodSummary {
   totalGenerated: number; // Total generado en el periodo
   pendingGenerated: number; // Total generado en estado pending
   pendingCollected: number; // Total recolectado en estado pending
-  bonus: number; // Bono acumulado en el periodo
   planCounts: PlanCounts; // Totales de clientes por plan
 }
 

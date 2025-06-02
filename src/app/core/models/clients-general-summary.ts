@@ -25,5 +25,4 @@ export interface FortnightData {
   incomeFromLastFortNight: number;
   grossIncome: number;
   trainerIncome: number;
-  monthBonus: number;
 }
