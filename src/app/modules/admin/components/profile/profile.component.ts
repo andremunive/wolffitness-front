@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
     'ingresosQuincenaPasada',
     'ingresosPendientes',
     'ingresoBruto',
-    'bonoDelMes',
     'pagoDelEntrenador',
     'ingresoNeto',
   ];
@@ -48,7 +47,6 @@ export class ProfileComponent implements OnInit {
     'quincena',
     'ingresosPendientes',
     'ingresoBruto',
-    'bonoDelMes',
     'pagoDelEntrenador',
     'ingresoNeto',
   ];
@@ -63,6 +61,7 @@ export class ProfileComponent implements OnInit {
     this._admin
       .getCLientGeneralSummary(3)
       .subscribe((summary: ClientGeneralSummary) => {
+        console.log('SUMMARY: ', summary);
         this.clientGeneralSummary = summary;
         this.trainers = Object.keys(summary?.data.attributes);
       });
@@ -71,11 +70,11 @@ export class ProfileComponent implements OnInit {
   transformGeneralSummary() {
     const tableData: any[] = [];
     const rubyAttributes: TrainerData =
-      this.clientGeneralSummary.data.attributes['Ruby Manjarres'];
+      this.clientGeneralSummary?.data.attributes['Ruby Manjarres'];
     const ivanAttributes: TrainerData =
-      this.clientGeneralSummary.data.attributes['Ivan Romero'];
+      this.clientGeneralSummary?.data.attributes['Ivan Romero'];
     const julioAttributes: TrainerData =
-      this.clientGeneralSummary.data.attributes['Julio Munive'];
+      this.clientGeneralSummary?.data.attributes['Julio Munive'];
     for (const month in rubyAttributes) {
       const rubySummary = rubyAttributes[month];
       const ivanSummary = ivanAttributes[month];
@@ -123,7 +122,6 @@ export class ProfileComponent implements OnInit {
           julioSummary.firstHalf.grossIncome +
           ivanSummary.firstHalf.grossIncome
         }`,
-        bonoDelMes: `0`,
         pagoDelEntrenador: `${
           rubySummary.firstHalf.trainerIncome +
           julioSummary.firstHalf.trainerIncome +
@@ -181,11 +179,6 @@ export class ProfileComponent implements OnInit {
           julioSummary.secondHalf.grossIncome +
           ivanSummary.secondHalf.grossIncome
         }`,
-        bonoDelMes: `${
-          rubySummary.secondHalf.monthBonus +
-          julioSummary.secondHalf.monthBonus +
-          ivanSummary.secondHalf.monthBonus
-        }`,
         pagoDelEntrenador: `${
           rubySummary.secondHalf.trainerIncome +
           julioSummary.secondHalf.trainerIncome +
@@ -193,14 +186,11 @@ export class ProfileComponent implements OnInit {
         }`,
         ingresoNeto: `${
           rubySummary.secondHalf.grossIncome -
-          rubySummary.secondHalf.trainerIncome -
-          rubySummary.secondHalf.monthBonus +
+          rubySummary.secondHalf.trainerIncome +
           (julioSummary.secondHalf.grossIncome -
-            julioSummary.secondHalf.trainerIncome -
-            julioSummary.secondHalf.monthBonus) +
+            julioSummary.secondHalf.trainerIncome) +
           (ivanSummary.secondHalf.grossIncome -
-            ivanSummary.secondHalf.trainerIncome -
-            ivanSummary.secondHalf.monthBonus)
+            ivanSummary.secondHalf.trainerIncome)
         }`,
       });
     }
@@ -224,7 +214,6 @@ export class ProfileComponent implements OnInit {
         ingresosQuincenaPasada: `${summary.firstHalf.incomeFromLastFortNight}`,
         ingresosPendientes: `${summary.firstHalf.pendinIncome}`,
         ingresoBruto: `${summary.firstHalf.grossIncome}`,
-        bonoDelMes: `0`,
         pagoDelEntrenador: `${summary.firstHalf.trainerIncome}`,
         ingresoNeto: `${
           summary.firstHalf.grossIncome - summary.firstHalf.trainerIncome
@@ -241,12 +230,9 @@ export class ProfileComponent implements OnInit {
         ingresosQuincenaPasada: `${summary.secondHalf.incomeFromLastFortNight}`,
         ingresosPendientes: `${summary.secondHalf.pendinIncome}`,
         ingresoBruto: `${summary.secondHalf.grossIncome}`,
-        bonoDelMes: `${summary.secondHalf.monthBonus}`,
         pagoDelEntrenador: `${summary.secondHalf.trainerIncome}`,
         ingresoNeto: `${
-          summary.secondHalf.grossIncome -
-          summary.secondHalf.trainerIncome -
-          summary.secondHalf.monthBonus
+          summary.secondHalf.grossIncome - summary.secondHalf.trainerIncome
         }`,
       });
     }
