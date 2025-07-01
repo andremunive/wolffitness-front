@@ -28,7 +28,7 @@
         formControlName="plan"
         appearance="standard"
         [value]="paymentRecordForm.value['plan']"
-        name="planSelection"
+        name="plan"
       >
         <mat-button-toggle class="plan-button" value="3 dias"
           >3 días</mat-button-toggle
@@ -43,7 +43,7 @@
         formControlName="amount"
         appearance="standard"
         [value]="paymentRecordForm.value['amount']"
-        name="planSelection"
+        name="amount"
       >
         <mat-button-toggle
           class="payment-button"
@@ -67,6 +67,13 @@
 
       <!-- Descuentos -->
       <div class="discounts" *ngIf="hasDiscount">
+        <h4 style="margin: 12px 0">Usuario Antiguo</h4>
+
+        <mat-slide-toggle
+          style="width: 100%; text-align: center; margin-bottom: 12px"
+          (click)="applyUADiscount()"
+          formControlName="UADiscount"
+        ></mat-slide-toggle>
         <h4>Descuento</h4>
         <!-- Descuento -->
         <mat-form-field
@@ -91,12 +98,24 @@
           formControlName="discountReason"
           appearance="standard"
           [value]="paymentRecordForm.value['discountReason']"
-          name="planSelection"
+          name="discountReason"
         >
-          <mat-button-toggle class="plan-button" value="Personal"
+          <mat-button-toggle
+            class="plan-button"
+            [value]="
+              paymentRecordForm.get('UADiscount').value
+                ? 'UA Personal'
+                : 'Personal'
+            "
             >Personal</mat-button-toggle
           >
-          <mat-button-toggle class="plan-button" value="Promocion"
+          <mat-button-toggle
+            class="plan-button"
+            [value]="
+              paymentRecordForm.get('UADiscount').value
+                ? 'UA Promocion'
+                : 'Promocion'
+            "
             >Promocion</mat-button-toggle
           >
         </mat-button-toggle-group>
@@ -107,7 +126,7 @@
         formControlName="currentPaymentStatus"
         appearance="standard"
         [value]="paymentRecordForm.value['status']"
-        name="planSelection"
+        name="currentPaymentStatus"
       >
         <mat-button-toggle class="plan-button" value="pending"
           >Pendiente</mat-button-toggle
@@ -142,7 +161,7 @@
         formControlName="status"
         appearance="standard"
         [value]="editPaymentRecordForm.value['status']"
-        name="planSelection"
+        name="status"
       >
         <mat-button-toggle disabled="true" style="width: 60%" value="pending"
           >Pendiente</mat-button-toggle

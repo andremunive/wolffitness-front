@@ -31,6 +31,7 @@ export class PaymentComponent implements OnInit {
     today.setHours(0, 0, 0, 0); // Quitar las horas para comparar solo fechas
     return date ? date >= today : false;
   };
+  UADiscount: boolean;
 
   constructor(
     private dialogRef: MatDialogRef<PaymentComponent>,
@@ -91,6 +92,20 @@ export class PaymentComponent implements OnInit {
       });
   }
 
+  applyUADiscount() {
+    const hasUAdiscount = this.paymentRecordForm.get('UADiscount').value;
+    if (hasUAdiscount) {
+      const discountReason = this.paymentRecordForm.get('discountReason').value;
+      const newValue = discountReason != '' ? `UA ${discountReason}` : 'UA';
+      this.paymentRecordForm.get('discountAmount').setValue('10000');
+      this.paymentRecordForm.get('discountReason').setValue(newValue);
+    } else {
+      const discountReason = this.paymentRecordForm.get('discountReason').value;
+      const resultado = discountReason.replace(/UA|\s+/g, '');
+      this.paymentRecordForm.get('discountReason').setValue(resultado);
+    }
+  }
+
   cancel() {
     this.dialogRef.close();
   }
@@ -138,6 +153,7 @@ export class PaymentComponent implements OnInit {
       hasDiscounted: [''],
       discountAmount: [''],
       discountReason: [''],
+      UADiscount: [false],
     });
 
     this.editPaymentRecordForm = this.formBuilder.group({
