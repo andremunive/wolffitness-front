@@ -38,13 +38,11 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
-    canActivate: [LoginGuard],
   },
   {
     path: '',
     loadChildren: () =>
       import('./modules/pages/pages.module').then((m) => m.PagesModule),
-    canActivate: [AuthGuard],
   },
   {
     path: '**',

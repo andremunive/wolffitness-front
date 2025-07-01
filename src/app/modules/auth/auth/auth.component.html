@@ -11,8 +11,12 @@
 
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-form-field appearance="outline" class="full-width">
-        <mat-label>User</mat-label>
-        <input matInput formControlName="user" placeholder="wolffitness user" />
+        <mat-label>Correo</mat-label>
+        <input
+          matInput
+          formControlName="email"
+          placeholder="Correo electronico"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
